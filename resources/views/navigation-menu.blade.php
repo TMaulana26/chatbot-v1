@@ -15,6 +15,9 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
+                        {{ __('System Instruction') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
                         {{ __('Chabot Gemini') }}
                     </x-nav-link>
@@ -147,6 +150,15 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
+                {{ __('System Instruction') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
+                {{ __('Chabot Gemini') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
+                {{ __('Chabot GPT') }}
             </x-responsive-nav-link>
         </div>
 

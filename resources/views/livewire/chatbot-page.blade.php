@@ -1,7 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }} {{ Auth::user()->getRoleNames()->first() }}
+            {{ __('Chatbot with ') }}
+            @if (request()->routeIs('chatbot'))
+                ChatGPT API
+            @elseif (request()->routeIs('chatbot-2'))
+                Gemini API
+            @else
+                ....{Error, No one to chat with}
+            @endif
         </h2>
     </x-slot>
 
