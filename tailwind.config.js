@@ -9,6 +9,13 @@ export default {
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './app/Livewire/**/*Table.php',
+        './vendor/power-components/livewire-powergrid/resources/views/**/*.php',
+        './vendor/power-components/livewire-powergrid/src/Themes/Tailwind.php'
+    ],
+
+    presets: [
+        require("./vendor/power-components/livewire-powergrid/tailwind.config.js"), 
     ],
 
     theme: {
