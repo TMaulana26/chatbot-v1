@@ -1,8 +1,8 @@
 <?php
 
+use Livewire\Livewire;
 use App\Livewire\SystemInstruction;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\SystemInstuctionCRUD;
 use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
@@ -25,7 +25,7 @@ Route::middleware([
     })->name('chatbot-2');
 
     Route::group(['prefix' => 'system-instruction'], function () {
-       Route::get('/index', [SystemInstruction::class, 'render'])->name('system-instruction.index'); 
+       Route::get('/index', [SystemInstruction::class, 'render'])->name('system-instruction.index');
     });
 
 
