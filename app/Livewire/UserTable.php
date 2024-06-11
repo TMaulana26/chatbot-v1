@@ -64,7 +64,7 @@ final class UserTable extends PowerGridComponent
                 ->searchable(),
 
             Column::make('Roles', 'role_name')
-                ->sortable(),
+                ->sortable(), //not sortable yet
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable()
