@@ -13,6 +13,7 @@ class InstructionModal extends Component
 
     public $name;
     public $instruction;
+    public $instructionId;
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -27,17 +28,29 @@ class InstructionModal extends Component
         $this->modalAdd = true;
     }
 
-    public function ModalEdit()
+    public function ModalEdit($id)
     {
         $this->resetValidation(); 
         $this->reset();
+
+        $this->instructionId = $id;
+
+        $instruction = SystemInstruction::find($id);
+        if ($instruction) {
+            $this->name = $instruction->name;
+            $this->instruction = $instruction->instruction;
+        }
+
         $this->modalEdit = true;
     }
 
-    public function ModalDelete()
+    public function ModalDelete($id)
     {
         $this->resetValidation(); 
         $this->reset();
+
+        $this->instructionId = $id;
+
         $this->modalDelete = true;
     }
 
@@ -48,12 +61,41 @@ class InstructionModal extends Component
             'instruction' => $this->instruction,
         ]);
 
-        $this->dispatch('instructionAdded');
+        $this->dispatch('reloadPage');
 
         $this->modalAdd = false;
         $this->resetForm();
         session()->flash('message', 'Instruction added successfully.');
     }
+
+    public function update()
+    {
+        $instruction = SystemInstruction::find($this->instructionId);
+        $instruction->update([
+            'name' => $this->name,
+            'instruction' => $this->instruction,
+        ]);
+
+        $this->dispatch('reloadPage');
+
+        $this->modalEdit = false;
+        $this->resetForm();
+        session()->flash('message', 'Instruction updated successfully.');
+    }
+
+    public function destroy()
+    {
+        $instruction = SystemInstruction::find($this->instructionId);
+        $instruction->delete();
+
+        $this->dispatch('reloadPage');
+
+        $this->modalDelete = false;
+        $this->resetForm();
+        session()->flash('message', 'Instruction deleted successfully.');
+    }
+
+
 
     public function resetForm()
     {

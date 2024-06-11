@@ -2,29 +2,32 @@
 
 namespace App\Livewire;
 
+use App\Models\user;
 use Illuminate\Support\Carbon;
-use App\Models\SystemInstruction;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
-final class SystemInstructionTable extends PowerGridComponent
+final class UserTable extends PowerGridComponent
 {
-    protected $listeners = ['reloadPage' => '$refresh'];
+    use WithExport;
 
     public function setUp(): array
     {
         $this->showCheckBox();
 
         return [
+            Exportable::make('export')
+                ->striped()
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
@@ -34,7 +37,7 @@ final class SystemInstructionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return SystemInstruction::query();
+        return user::query();
     }
 
     public function relationSearch(): array
@@ -47,9 +50,8 @@ final class SystemInstructionTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('name')
-            ->add('instruction')
-            ->add('created_at')
-            ->add('updated_at');
+            ->add('email')
+            ->add('created_at');
     }
 
     public function columns(): array
@@ -60,23 +62,14 @@ final class SystemInstructionTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Instruction', 'instruction')
+            Column::make('Email', 'email')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->sortable()
-                ->hidden(),
+                ->sortable(),
 
             Column::make('Created at', 'created_at')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Updated at', 'updated_at_formatted', 'updated_at')
-                ->sortable()
-                ->hidden(),
-
-            Column::make('Updated at', 'updated_at')
                 ->sortable()
                 ->searchable(),
 
@@ -93,33 +86,17 @@ final class SystemInstructionTable extends PowerGridComponent
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        $this->dispatch('modalEdit');
-        $this->js('alert(' . $rowId . ')');
+        $this->js('alert('.$rowId.')');
     }
 
-    #[\Livewire\Attributes\On('delete')]
-    public function delete($rowId): void
-    {
-        $this->dispatch('modalDelete');
-        $this->js('alert(' . $rowId . ')');
-    }
-
-    public function actions(SystemInstruction $row): array
+    public function actions(user $row): array
     {
         return [
             Button::add('edit')
-                ->render(function ($rowId) {
-                    return Blade::render(<<<HTML
-                    <x-button onclick="Livewire.dispatch('ModalEdit', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-pen-to-square"></i></x-button>
-                HTML);
-                }),
-
-            Button::add('delete')
-                ->render(function ($rowId) {
-                    return Blade::render(<<<HTML
-                    <x-button onclick="Livewire.dispatch('ModalDelete', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-trash"></i></x-button>
-                HTML);
-                }),
+                ->slot('Edit: '.$row->id)
+                ->id()
+                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
+                ->dispatch('edit', ['rowId' => $row->id])
         ];
     }
 
