@@ -18,8 +18,9 @@
                     </div>
                     <div class="m-4">
                         <div class="flex justify-center mt-4">
-                            <x-button onclick="Livewire.dispatch('ModalAddUser')">{{ __('Add User') }}</x-button>
+                            <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add User') }}</x-button>
                         </div>
+                        <livewire:user-management-modal />
                         <livewire:user-table />
                     </div>
                 </div>

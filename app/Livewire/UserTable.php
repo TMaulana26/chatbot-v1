@@ -19,6 +19,7 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
 final class UserTable extends PowerGridComponent
 {
+    protected $listeners = ['reloadPage' => '$refresh'];
 
     public function setUp(): array
     {
