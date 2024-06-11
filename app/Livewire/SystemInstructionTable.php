@@ -22,8 +22,6 @@ final class SystemInstructionTable extends PowerGridComponent
 
     public function setUp(): array
     {
-        $this->showCheckBox();
-
         return [
             Header::make()->showSearchInput(),
             Footer::make()
@@ -90,34 +88,20 @@ final class SystemInstructionTable extends PowerGridComponent
         ];
     }
 
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
-    {
-        $this->dispatch('modalEdit');
-        $this->js('alert(' . $rowId . ')');
-    }
-
-    #[\Livewire\Attributes\On('delete')]
-    public function delete($rowId): void
-    {
-        $this->dispatch('modalDelete');
-        $this->js('alert(' . $rowId . ')');
-    }
-
     public function actions(SystemInstruction $row): array
     {
         return [
             Button::add('edit')
                 ->render(function ($rowId) {
                     return Blade::render(<<<HTML
-                    <x-button onclick="Livewire.dispatch('ModalEdit', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-pen-to-square"></i></x-button>
+                    <x-success-button onclick="Livewire.dispatch('ModalEdit', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-pen-to-square text-gray-300"></i></x-success-button>
                 HTML);
                 }),
 
             Button::add('delete')
                 ->render(function ($rowId) {
                     return Blade::render(<<<HTML
-                    <x-button onclick="Livewire.dispatch('ModalDelete', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-trash"></i></x-button>
+                    <x-danger-button onclick="Livewire.dispatch('ModalDelete', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-trash text-gray-300"></i></x-danger-button>
                 HTML);
                 }),
         ];

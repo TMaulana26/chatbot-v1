@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Livewire;
+use App\Livewire\UsersManagement;
 use App\Livewire\SystemInstruction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
@@ -26,6 +26,10 @@ Route::middleware([
 
     Route::group(['prefix' => 'system-instruction'], function () {
        Route::get('/index', [SystemInstruction::class, 'render'])->name('system-instruction.index');
+    });
+
+    Route::group(['prefix' => 'users-management'], function () {
+        Route::get('/index', [UsersManagement::class, 'render'])->name('users-management.index');
     });
 
 

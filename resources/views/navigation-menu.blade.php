@@ -15,6 +15,9 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
+                        {{ __('Users Management') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
                         {{ __('System Instruction') }}
                     </x-nav-link>
@@ -150,6 +153,9 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
+                {{ __('Users Management') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
                 {{ __('System Instruction') }}
