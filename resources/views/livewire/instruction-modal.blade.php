@@ -1,6 +1,6 @@
 <div>
     <!-- Test Modal -->
-    <x-dialog-modal wire:model.live="modal">
+    <x-dialog-modal wire:model.live="modalAdd">
         <x-slot name="title">
             {{ __('Add Instruction') }}
         </x-slot>
@@ -20,7 +20,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('modal')"
+            <x-secondary-button wire:click="$toggle('modalAdd')"
                 wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-secondary-button>

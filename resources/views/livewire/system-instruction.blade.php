@@ -18,9 +18,9 @@
                     </div>
                     <div class="m-4">
                         <div class="flex justify-center mt-4">
-                            <x-button onclick="Livewire.dispatch('addModal')">{{ __('Add Instruction') }}</x-button>
+                            <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add Instruction') }}</x-button>
                         </div>
-                        <livewire:add-instruction-modal />
+                        <livewire:instruction-modal />
                         <livewire:system-instruction-table />
                     </div>
                 </div>

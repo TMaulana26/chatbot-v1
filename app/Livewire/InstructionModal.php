@@ -5,9 +5,12 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\SystemInstruction;
 
-class AddInstructionModal extends Component
+class InstructionModal extends Component
 {
-    public $modal = false;
+    public $modalAdd = false;
+    public $modalEdit = false;
+    public $modalDelete = false;
+
     public $name;
     public $instruction;
 
@@ -16,12 +19,26 @@ class AddInstructionModal extends Component
         'instruction' => 'required|string|max:1000',
     ];
 
-    protected $listeners = ['addModal'];
-    public function addModal()
+    protected $listeners = ['ModalAdd', 'ModalEdit', 'ModalDelete'];
+    public function ModalAdd()
     {
         $this->resetValidation(); 
         $this->reset();
-        $this->modal = true;
+        $this->modalAdd = true;
+    }
+
+    public function ModalEdit()
+    {
+        $this->resetValidation(); 
+        $this->reset();
+        $this->modalEdit = true;
+    }
+
+    public function ModalDelete()
+    {
+        $this->resetValidation(); 
+        $this->reset();
+        $this->modalDelete = true;
     }
 
     public function create()
@@ -33,7 +50,7 @@ class AddInstructionModal extends Component
 
         $this->dispatch('instructionAdded');
 
-        $this->modal = false;
+        $this->modalAdd = false;
         $this->resetForm();
         session()->flash('message', 'Instruction added successfully.');
     }
@@ -45,6 +62,6 @@ class AddInstructionModal extends Component
     }
     public function render()
     {
-        return view('livewire.add-instruction-modal');
+        return view('livewire.instruction-modal');
     }
 }
