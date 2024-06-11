@@ -32,7 +32,10 @@ final class UserTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return User::query();
+        return User::query()
+            ->leftJoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->select('users.*', 'roles.name as role_name');
     }
 
     public function relationSearch(): array
@@ -44,9 +47,9 @@ final class UserTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('user_name', fn ($user)=> e($user->name))
-            ->add('user_email', fn ($user)=> e($user->email))
-            ->add('role_name', fn ($user)=> e($user->roles->isNotEmpty() ? $user->roles[0]['name'] : 'No role assigned'))
+            ->add('user_name', fn($user) => e($user->name))
+            ->add('user_email', fn($user) => e($user->email))
+            ->add('role_name', fn($user) => e($user->roles->isNotEmpty() ? $user->roles[0]['name'] : 'No role assigned'))
             ->add('created_at');
 
     }
@@ -54,17 +57,19 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
-            Column::make('Name', 'user_name')
+            Column::make('Id', 'id')
+                ->sortable(),
+
+            Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Email', 'user_email')
+            Column::make('Email', 'email')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Roles', 'role_name')
-                ->sortable(), //not sortable yet
+                ->sortable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable()
@@ -84,6 +89,8 @@ final class UserTable extends PowerGridComponent
         return [
         ];
     }
+
+
 
     public function actions(user $row): array
     {
