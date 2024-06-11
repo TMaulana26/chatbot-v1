@@ -32,7 +32,7 @@
     </x-dialog-modal>
 
         <!-- Edit Modal -->
-        <x-dialog-modal wire:model="modalEdit">
+        <x-dialog-modal wire:model.live="modalEdit">
             <x-slot name="title">
                 {{ __('Edit Instruction') }}
             </x-slot>
@@ -61,7 +61,7 @@
         </x-dialog-modal>
     
         <!-- Delete Modal -->
-        <x-dialog-modal wire:model="modalDelete">
+        <x-dialog-modal wire:model.live="modalDelete">
             <x-slot name="title">
                 {{ __('Delete Instruction') }}
             </x-slot>

@@ -10,9 +10,4 @@ class SystemInstruction extends Component
     {
         return view('livewire.system-instruction');
     }
-
-    public function addModal()
-    {
-        $this->dispatch('addModal');
-    }
 }

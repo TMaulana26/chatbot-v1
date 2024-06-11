@@ -93,6 +93,7 @@ final class SystemInstructionTable extends PowerGridComponent
     public function edit($rowId): void
     {
         $this->dispatch('modalEdit');
+        
     }
 
     #[\Livewire\Attributes\On('delete')]
@@ -108,7 +109,7 @@ final class SystemInstructionTable extends PowerGridComponent
                 ->slot('<i class="fa-sharp fa-solid fa-pen-to-square"></i>')
                 ->id()
                 ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id]),
+                ->dispatch('edtit', ['rowId' => $row->id]),
 
             Button::add('delete')
                 ->slot('<i class="fa-solid fa-trash"></i>')
