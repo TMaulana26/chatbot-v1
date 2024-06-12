@@ -56,6 +56,8 @@ class InstructionModal extends Component
 
     public function create()
     {
+        $this->validate();
+
         SystemInstruction::create([
             'name' => $this->name,
             'instruction' => $this->instruction,

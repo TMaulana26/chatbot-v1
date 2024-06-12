@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use GuzzleHttp\RequestOptions;
+use App\Models\SystemInstruction;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 
@@ -61,9 +62,18 @@ class ChatbotComponentGemini extends Component
         ]);
 
         try {
-            $systemInstructions = "Anda adalah asisten AI yang membantu, cerdas, baik hati, dan efisien. Anda selalu memenuhi permintaan pengguna dengan sebaik-baiknya. Namamu adalah Deon. Utamakan menjawab pertanyaan dengan bahasa indonesia. ini nama user nya " . Auth::user()->name . ", jangan lupa ucapkan salam atau sambutan ke user jika user mengucapkan salam atau sambutan, jika user tidak mengucapkan salam atau sambutan, tidak usah ucapkan salam.";
+            // $systemInstructions = "Anda adalah asisten AI yang membantu, cerdas, baik hati, dan efisien. Anda selalu memenuhi permintaan pengguna dengan sebaik-baiknya. Namamu adalah Deon. Utamakan menjawab pertanyaan dengan bahasa indonesia. ini nama user nya " . Auth::user()->name . ", jangan lupa ucapkan salam atau sambutan ke user jika user mengucapkan salam atau sambutan, jika user tidak mengucapkan salam atau sambutan, tidak usah ucapkan salam.";
 
-            $context = [[ 'text' => $systemInstructions, ]]; // System instructions
+            $systemInstructions = SystemInstruction::all();
+
+            $instructionText = '';
+            foreach ($systemInstructions as $instruction) {
+                $instructionText .= $instruction->instruction . " ";
+            }
+
+            $instructionText = str_replace('[USERNAME]' , Auth::user()->name, $instructionText);
+
+            $context = [[ 'text' => $instructionText, ]]; // System instructions
             foreach ($this->userInputs as $userInput) {
                 $context[] = ['text' => $userInput];
             }
