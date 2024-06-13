@@ -12,12 +12,18 @@ class Employee extends Model
     protected $fillable = [
         'name',
         'email',
+        'job_title',
         'phone',
-        'address',
-        'user_id'
+        'hire_date',
+        'user_id',
+        'department_id',
     ];
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class);
     }
 }
