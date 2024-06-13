@@ -49,8 +49,6 @@ class EmployeeProfile extends Component
             Employee::create(array_merge($this->state, ['email' => $user->email, 'user_id' => $user->id]));
         }
 
-        $this->dispatch('saved');
-        session()->flash('message', 'Employee information updated successfully.');
     }
 
     public function render()

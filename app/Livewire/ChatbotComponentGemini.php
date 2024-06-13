@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Employee;
 use GuzzleHttp\Client;
 use Livewire\Component;
 use App\Models\ChatMessage;
@@ -16,6 +17,7 @@ class ChatbotComponentGemini extends Component
     public $message;
     public $userInputs = [];
     public $responses = [];
+    public $employeeData = [];
     public $currentSessionId;
 
     public function mount()
@@ -62,16 +64,29 @@ class ChatbotComponentGemini extends Component
         ]);
 
         try {
-            // $systemInstructions = "Anda adalah asisten AI yang membantu, cerdas, baik hati, dan efisien. Anda selalu memenuhi permintaan pengguna dengan sebaik-baiknya. Namamu adalah Deon. Utamakan menjawab pertanyaan dengan bahasa indonesia. ini nama user nya " . Auth::user()->name . ", jangan lupa ucapkan salam atau sambutan ke user jika user mengucapkan salam atau sambutan, jika user tidak mengucapkan salam atau sambutan, tidak usah ucapkan salam.";
-
             $systemInstructions = SystemInstruction::all();
+            $getEmployeeData = Employee::all();
 
             $instructionText = '';
             foreach ($systemInstructions as $instruction) {
                 $instructionText .= $instruction->instruction . " ";
             }
 
-            $instructionText = str_replace('[USERNAME]' , Auth::user()->name, $instructionText);
+            $employeeData = '';
+            foreach ($getEmployeeData as $data) {
+                $employeeData .= "(Nama : ". $data->name . ", ";
+                $employeeData .= "Departermen : ". $data->department_id . ", ";
+                $employeeData .= "Jabatan : ". $data->job_title . ", ";
+                $employeeData .= "Email : ". $data->email . ", ";
+                $employeeData .= "No. HP : ". $data->phone . ", ";
+                $employeeData .= "Mulai Kerja : ". $data->hire_date . ", ";
+                $employeeData .= "Gaji : ". $data->salary . " )";
+            }
+
+            $instructionText = str_replace('[EMPLOYEEDATA]' , $employeeData, $instructionText);
+            $instructionText = str_replace('[USERNAME]' , Auth::user()->employee->name, $instructionText);
+
+            dd($instructionText);
 
             $context = [[ 'text' => $instructionText, ]]; // System instructions
             foreach ($this->userInputs as $userInput) {
@@ -97,7 +112,7 @@ class ChatbotComponentGemini extends Component
             $data = app(MarkdownRenderer::class)->toHtml($botMessage);
 
             $this->responses[] = $data;
-            $this->saveMessage($botMessage, false);
+            $this->saveMessage($data, false);
 
             $this->message = '';
 
