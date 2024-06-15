@@ -72,6 +72,8 @@ class InstructionModal extends Component
 
     public function update()
     {
+        $this->validate();
+        
         $instruction = SystemInstruction::find($this->instructionId);
         $instruction->update([
             'name' => $this->name,

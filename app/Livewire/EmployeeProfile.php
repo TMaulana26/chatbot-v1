@@ -49,6 +49,8 @@ class EmployeeProfile extends Component
             Employee::create(array_merge($this->state, ['email' => $user->email, 'user_id' => $user->id]));
         }
 
+        $this->dispatch('saved');
+
     }
 
     public function render()

@@ -19,7 +19,6 @@ class EmployeeModal extends Component
     public $employeeId;
     public $userId;
     public $name;
-    public $email;
     public $jobTitle;
     public $department_id;
     public $phone;
@@ -29,34 +28,19 @@ class EmployeeModal extends Component
     protected $rules = [
         'userId' => 'required',
         'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255',
         'jobTitle' => 'required|string|max:255',
         'department_id' => 'required',
         'phone' => 'required|string|max:255',
         'hireDate' => 'required|date',
-        'salary' => 'required|numeric',
+        'salary' => 'sometimes|string|max:255',
     ];
 
-    protected $listeners = ['ModalAdd', 'ModalEdit', 'ModalDelete', 'fetchEmployeeData'];
+    protected $listeners = ['ModalAdd', 'ModalEdit', 'ModalDelete'];
 
     public function ModalAdd()
     {
         $this->resetValidation();
         $this->reset();
-
-        $id = $this->employeeId ?? null;
-
-        $employee = Employee::find($id);
-        if ($employee) {
-            $this->userId = $employee->user_id;
-            $this->name = $employee->name;
-            $this->email = $employee->email;
-            $this->jobTitle = $employee->jobTitle;
-            $this->department_id = $employee->department_id;
-            $this->phone = $employee->phone;
-            $this->hireDate = $employee->hireDate;
-            $this->salary = $employee->salary;
-        }
 
         $this->modalAdd = true;
     }
@@ -72,12 +56,11 @@ class EmployeeModal extends Component
         if ($employee) {
             $this->userId = $employee->user_id;
             $this->name = $employee->name;
-            $this->email = $employee->email;
-            $this->jobTitle = $employee->jobTitle;
+            $this->jobTitle = $employee->job_title;
             $this->department_id = $employee->department_id;
             $this->phone = $employee->phone;
-            $this->hireDate = $employee->hireDate;
-            $this->salary = $employee->salary;
+            $this->hireDate = $employee->hire_date;
+            $this->salary = str_replace(['Rp.', ',', '.'], '', $employee->salary);
         }
 
         $this->modalEdit = true;
@@ -93,23 +76,20 @@ class EmployeeModal extends Component
         $this->modalDelete = true;
     }
 
-    public function createOrUpdate()
+    public function createEmployee()
     {
         $this->validate();
 
-        Employee::updateOrCreate(
-            ['id' => $this->employeeId],
-            [
-                'user_id' => $this->userId,
-                'name' => $this->name,
-                'email' => $this->email,
-                'jobTitle' => $this->jobTitle,
-                'department_id' => $this->department_id,
-                'phone' => $this->phone,
-                'hireDate' => $this->hireDate,
-                'salary' => $this->salary,
-            ]
-        );
+        Employee::create([
+            'user_id' => $this->userId,
+            'name' => $this->name,
+            'email' => $this->users->where('id', $this->userId)->first()->email,
+            'job_title' => $this->jobTitle,
+            'department_id' => $this->department_id,
+            'phone' => $this->phone,
+            'hire_date' => $this->hireDate,
+            'salary' => "Rp. " . number_format($this->salary, 2, '.', ','),
+        ]);
 
         $this->dispatch('reloadPage');
 
@@ -117,36 +97,36 @@ class EmployeeModal extends Component
         $this->resetForm();
     }
 
+    public function update()
+    {
+        $this->validate();
+
+        $employee = Employee::find($this->employeeId);
+
+        $employee->update([
+            'name' => $this->name,
+            'job_title' => $this->jobTitle,
+            'department_id' => $this->department_id,
+            'phone' => $this->phone,
+            'hire_date' => $this->hireDate,
+            'salary' => "Rp. " . number_format((float) $this->salary, 2, '.', ','),
+        ]);
+
+        $this->dispatch('reloadPage');
+
+        $this->modalEdit = false;
+        $this->resetForm();
+    }
+
     public function destroy()
     {
         $employee = Employee::find($this->employeeId);
-        if ($employee) {
-            $employee->delete();
-        }
+        $employee->delete();
 
         $this->dispatch('reloadPage');
 
         $this->modalDelete = false;
         $this->resetForm();
-    }
-
-    public function fetchEmployeeData($userId)
-    {
-        $employee = Employee::where('user_id', $userId)->first();
-
-        if ($employee) {
-            $this->userId = $employee->user_id;
-            $this->name = $employee->name;
-            $this->email = $employee->email;
-            $this->jobTitle = $employee->jobTitle;
-            $this->department_id = $employee->department_id;
-            $this->phone = $employee->phone;
-            $this->hireDate = $employee->hireDate;
-            $this->salary = $employee->salary;
-            $this->employeeId = $employee->id;
-        } else {
-            $this->reset(['name', 'email', 'jobTitle', 'department_id', 'phone', 'hireDate', 'salary', 'employeeId']);
-        }
     }
 
     public function resetForm()
@@ -157,8 +137,9 @@ class EmployeeModal extends Component
 
     public function render()
     {
+        $employeeUserIds = Employee::pluck('user_id')->toArray();
         $this->departments = Department::all();
-        $this->users = User::all();
+        $this->users = User::whereNotIn('id', $employeeUserIds)->get();
         return view('livewire.employee-modal', ['departments' => $this->departments, 'users' => $this->users]);
     }
 }

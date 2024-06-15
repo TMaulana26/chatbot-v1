@@ -15,6 +15,7 @@ class Employee extends Model
         'job_title',
         'phone',
         'hire_date',
+        'salary',
         'user_id',
         'department_id',
     ];

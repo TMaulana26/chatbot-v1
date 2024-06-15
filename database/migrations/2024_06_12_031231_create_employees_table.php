@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->date('hire_date');
-            $table->decimal('salary', 10, 2)->nullable();
+            $table->string('salary')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

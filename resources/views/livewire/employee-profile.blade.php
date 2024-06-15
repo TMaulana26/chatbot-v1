@@ -51,7 +51,7 @@
 
         <div class="col-span-6 sm:col-span-4">
             <x-label for="salary" value="{{ __('Salary') }}" />
-            <input id="salary" type="number"
+            <input id="salary" type="text"
                 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                 wire:model.defer="state.salary" autocomplete="salary" disabled placeholder="{{ __('Not Assign Yet') }}"/>
             <x-input-error for="salary" class="mt-2" />

@@ -52,7 +52,9 @@ final class EmployeeTable extends PowerGridComponent
             ->add('department_name', fn($row) => e($row->department->name))
             ->add('phone')
             ->add('hire_date')
-            ->add('created_at');
+            ->add('salary')
+            ->add('created_at')
+            ->add('updated_at');
     }
 
     public function columns(): array
@@ -80,11 +82,22 @@ final class EmployeeTable extends PowerGridComponent
             Column::make('Hire date',  'hire_date')
                 ->sortable(),
 
+            Column::make('Salary', 'salary')
+                ->sortable(),
+
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable()
                 ->hidden(),
 
             Column::make('Created at', 'created_at')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Updated at', 'updated_at_formatted', 'updated_at')
+                ->sortable()
+                ->hidden(),
+
+            Column::make('Updated at', 'updated_at')
                 ->sortable()
                 ->searchable(),
 
@@ -96,12 +109,6 @@ final class EmployeeTable extends PowerGridComponent
     {
         return [
         ];
-    }
-
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
-    {
-        $this->js('alert(' . $rowId . ')');
     }
 
     public function actions(Employee $row): array
