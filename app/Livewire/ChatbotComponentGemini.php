@@ -2,9 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Models\Employee;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Livewire\Component;
+use App\Models\Employee;
 use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use GuzzleHttp\RequestOptions;
@@ -17,7 +18,6 @@ class ChatbotComponentGemini extends Component
     public $message;
     public $userInputs = [];
     public $responses = [];
-    public $employeeData = [];
     public $currentSessionId;
 
     public function mount()
@@ -80,13 +80,10 @@ class ChatbotComponentGemini extends Component
                 $employeeData .= "Email : ". $data->email . ", ";
                 $employeeData .= "No. HP : ". $data->phone . ", ";
                 $employeeData .= "Mulai Kerja : ". $data->hire_date . ", ";
-                $employeeData .= "Gaji : ". $data->salary . " )";
+                $employeeData .= "Gaji : ". $data->salary . "). ";
             }
-
-            $instructionText = str_replace('[EMPLOYEEDATA]' , $employeeData, $instructionText);
+            $instructionText = str_replace('[EMPLOYEE_DATA]' , $employeeData, $instructionText);
             $instructionText = str_replace('[USERNAME]' , Auth::user()->employee->name, $instructionText);
-
-            dd($instructionText);
 
             $context = [[ 'text' => $instructionText, ]]; // System instructions
             foreach ($this->userInputs as $userInput) {

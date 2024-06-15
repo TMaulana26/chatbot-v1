@@ -58,5 +58,10 @@ class SystemInstructionSeeder extends Seeder
             'name' => 'Ramah, Profesional, dan Informatif',
             'instruction' => 'Gunakan bahasa yang sopan, mudah dipahami, dan sesuai dengan standar profesionalisme PT KAI. Berikan informasi yang akurat dan relevan.'
         ]);
+
+        SystemInstruction::create([
+            'name' => 'Integrasi Data Karyawan',
+            'instruction' => 'Berikut merupaka data data kariawan di perusahaan, [EMPLOYEE_DATA], Gunakan jika user menanyakan tentang data karyawan, jika tidak, tidak usah di gunakan.'
+        ]);
     }
 }

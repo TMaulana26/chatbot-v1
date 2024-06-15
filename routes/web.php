@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\EmployeeManagement;
 use App\Livewire\UsersManagement;
 use App\Livewire\SystemInstruction;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,10 @@ Route::middleware([
 
     Route::group(['prefix' => 'users-management'], function () {
         Route::get('/index', [UsersManagement::class, 'render'])->name('users-management.index');
+    });
+
+    Route::group(['prefix' => 'employees-management'], function () {
+        Route::get('/index', [EmployeeManagement::class, 'render'])->name('employees-management.index');
     });
 
 
