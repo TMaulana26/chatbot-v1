@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -19,7 +19,10 @@
                         {{ __('Users Management') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
-                        {{ __('System Instruction') }}
+                        {{ __('System Instructions') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
+                        {{ __('Departments') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                         {{ __('Employees Management') }}
@@ -161,7 +164,10 @@
                 {{ __('Users Management') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
-                {{ __('System Instruction') }}
+                {{ __('System Instructions') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
+                {{ __('Departments') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                 {{ __('Employees Management') }}

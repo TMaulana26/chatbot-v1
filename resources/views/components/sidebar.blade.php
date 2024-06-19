@@ -47,6 +47,12 @@
             </x-responsive-nav-link>
         </div>
         <div class="px-4 py-2">
+            <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
+                <i class="fas fa-briefcase"></i>
+                <span class="ml-3" x-show="isOpen">Departments</span>
+            </x-responsive-nav-link>
+        </div>
+        <div class="px-4 py-2">
             <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                 <i class="fas fa-briefcase"></i>
                 <span class="ml-3" x-show="isOpen">Employees Management</span>
