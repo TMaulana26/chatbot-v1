@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Department;
+use App\Models\DepartmentTask;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,9 +17,9 @@ use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
-final class DepartmentTable extends PowerGridComponent
+final class DepartmentTaskTable extends PowerGridComponent
 {
-    protected $listeners = ['reloadPage' => '$refresh'];
+    use WithExport;
 
     public function setUp(): array
     {
@@ -33,7 +33,7 @@ final class DepartmentTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Department::query()->with('tasks');
+        return DepartmentTask::query();
     }
 
     public function relationSearch(): array
@@ -45,9 +45,11 @@ final class DepartmentTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('name')
+            ->add('title')
             ->add('description')
-            ->add('tasks', fn($row) => e($row->tasks->pluck('title')[0]))
+            ->add('department_id')
+            ->add('status')
+            ->add('due_date_formatted', fn (DepartmentTask $model) => Carbon::parse($model->due_date)->format('d/m/Y'))
             ->add('created_at')
             ->add('updated_at');
     }
@@ -56,7 +58,7 @@ final class DepartmentTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id'),
-            Column::make('Name', 'name')
+            Column::make('Title', 'title')
                 ->sortable()
                 ->searchable(),
 
@@ -64,9 +66,13 @@ final class DepartmentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Tasks', 'tasks')
+            Column::make('Department id', 'department_id'),
+            Column::make('Status', 'status')
                 ->sortable()
                 ->searchable(),
+
+            Column::make('Due date', 'due_date_formatted', 'due_date')
+                ->sortable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable()
@@ -94,7 +100,13 @@ final class DepartmentTable extends PowerGridComponent
         ];
     }
 
-    public function actions(Department $row): array
+    #[\Livewire\Attributes\On('edit')]
+    public function edit($rowId): void
+    {
+        $this->js('alert('.$rowId.')');
+    }
+
+    public function actions(DepartmentTask $row): array
     {
         return [
             Button::add('edit')
@@ -112,4 +124,16 @@ final class DepartmentTable extends PowerGridComponent
             }),
         ];
     }
+
+    /*
+    public function actionRules($row): array
+    {
+       return [
+            // Hide button edit for ID 1
+            Rule::button('edit')
+                ->when(fn($row) => $row->id === 1)
+                ->hide(),
+        ];
+    }
+    */
 }

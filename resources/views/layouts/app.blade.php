@@ -22,10 +22,13 @@
     <x-banner />
 
     <div class="relative min-h-screen bg-gray-100 dark:bg-gray-900 flex">
+        <!-- Sidebar -->
+        <div class="hidden md:block">
             <x-sidebar />
+        </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col transition-all duration-300 ml-20 lg:ml-20">
+        <div class="flex-1 flex flex-col transition-all duration-300 md:ml-20 lg:ml-20">
             @livewire('navigation-menu')
 
             <!-- Page Heading -->

@@ -19,7 +19,6 @@
     </div>
 
     <div class="flex flex-col items-center p-4 border-b border-gray-700" x-show="isOpen">
-        <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/40" alt="Avatar">
         <span class="mt-2 font-medium">{{ Auth::user()->name }}</span>
         <span class="text-sm text-gray-400">{{ Auth::user()->email }}</span>
         <x-nav-link class="mt-2" href="{{ route('profile.show') }}">
@@ -50,6 +49,12 @@
             <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
                 <i class="fas fa-briefcase"></i>
                 <span class="ml-3" x-show="isOpen">Departments</span>
+            </x-responsive-nav-link>
+        </div>
+        <div class="px-4 py-2">
+            <x-responsive-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
+                <i class="fas fa-briefcase"></i>
+                <span class="ml-3" x-show="isOpen">Departments Tasks</span>
             </x-responsive-nav-link>
         </div>
         <div class="px-4 py-2">

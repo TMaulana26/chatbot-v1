@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
         for ($i = 1; $i <= 5; $i++) { 
             User::create([
                 'name' => "Mtim $i",
-                'email' => "employee$i@example.com",
+                'email' => "employee$i@$i.com",
                 'password' => Hash::make('mtimmtim26'), 
             ])->assignRole($employeeRole);
         }

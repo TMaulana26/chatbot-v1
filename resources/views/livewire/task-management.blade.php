@@ -13,17 +13,13 @@
                     <div class="flex flex-col justify-center">
                         <x-application-logo class="block h-10 w-auto" />
                         <p class="font-bold text-gray-500 text-center mt-2 italic">
-                            {{ __('Departments Management ') }}
+                            {{ __('Departments Tasks Management ') }}
                         </p>
                     </div>
                     <div class="m-4">
                         <div class="flex justify-center mt-4">
-                            <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add Department') }}</x-button>
+                            <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add Task') }}</x-button>
                         </div>
-                        <livewire:department-modal />
-                        <livewire:department-table />
-                    </div>
-                    <div class="m-4">
                         <livewire:department-task-table/>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 use App\Livewire\DepartmentManagement;
 use App\Livewire\EmployeeManagement;
+use App\Livewire\TaskManagement;
 use App\Livewire\UsersManagement;
 use App\Livewire\SystemInstruction;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,9 @@ Route::middleware([
         });
         Route::group(['prefix' => 'department-management'], function () {
            Route::get('/', [DepartmentManagement::class, 'render'])->name('department-management.index'); 
+        });
+        Route::group(['prefix' => 'department-tasks-management'], function () {
+           Route::get('/', [TaskManagement::class, 'render'])->name('department-tasks-management.index'); 
         });
     });
 

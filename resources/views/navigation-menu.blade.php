@@ -24,6 +24,9 @@
                     <x-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
                         {{ __('Departments') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
+                        {{ __('Departments Task') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                         {{ __('Employees Management') }}
                     </x-nav-link>
@@ -168,6 +171,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
                 {{ __('Departments') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
+                {{ __('Departments Tasks') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                 {{ __('Employees Management') }}
