@@ -47,7 +47,7 @@ final class DepartmentTable extends PowerGridComponent
             ->add('id')
             ->add('name')
             ->add('description')
-            ->add('tasks', fn($row) => e($row->tasks->pluck('title')[0]))
+            ->add('tasks', fn($row) => e($row->tasks->pluck('title')->last()))
             ->add('created_at')
             ->add('updated_at');
     }
@@ -65,7 +65,6 @@ final class DepartmentTable extends PowerGridComponent
                 ->searchable(),
 
             Column::make('Tasks', 'tasks')
-                ->sortable()
                 ->searchable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')

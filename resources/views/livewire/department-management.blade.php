@@ -23,9 +23,6 @@
                         <livewire:department-modal />
                         <livewire:department-table />
                     </div>
-                    <div class="m-4">
-                        <livewire:department-task-table/>
-                    </div>
                 </div>
             </div>
         </div>

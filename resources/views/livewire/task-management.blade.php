@@ -20,6 +20,7 @@
                         <div class="flex justify-center mt-4">
                             <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add Task') }}</x-button>
                         </div>
+                        <livewire:department-task-modal />
                         <livewire:department-task-table/>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
     <!-- Add Modal -->
     <x-dialog-modal wire:model.live="modalAdd">
         <x-slot name="title">
-            {{ __('Add Instruction') }}
+            {{ __('Add Department') }}
         </x-slot>
 
         <x-slot name="content">
@@ -18,7 +18,7 @@
                 <div class="mt-4">
                     <x-label for="description" value="{{ __('Description') }}" />
                     <x-input id="description" class="mt-1 block w-full" wire:model.defer="description" />
-                    @error('instruction')
+                    @error('description')
                         <span class="text-red-600">{{ $message }}</span>
                     @enderror
                 </div>

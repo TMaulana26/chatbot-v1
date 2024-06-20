@@ -2,15 +2,19 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Livewire\Component;
 use App\Models\Employee;
+use App\Models\Attendance;
+use App\Models\Department;
 use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use GuzzleHttp\RequestOptions;
 use App\Models\SystemInstruction;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SendChatController;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 class ChatbotComponentGemini extends Component
@@ -18,7 +22,9 @@ class ChatbotComponentGemini extends Component
     public $message;
     public $userInputs = [];
     public $responses = [];
+    public $contentsContext = [];
     public $currentSessionId;
+    
 
     public function mount()
     {
@@ -48,55 +54,45 @@ class ChatbotComponentGemini extends Component
     }
 
     public function chat()
-{
-    if (!$this->currentSessionId) {
-        $this->startNewSession();
-    }
-
-    $this->userInputs[] = $this->message;
-    $this->saveMessage($this->message, true);
-
-    $client = new Client([
-        'base_uri' => 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
-        'headers' => [
-            'Content-Type' => 'application/json',
-        ],
-    ]);
-
-    try {
-        $systemInstructions = SystemInstruction::all();
-        $getEmployeeData = Employee::all();
-
-        $instructionText = '';
-        foreach ($systemInstructions as $instruction) {
-            $instructionText .= $instruction->instruction . " ";
+    {
+        if (!$this->currentSessionId) {
+            $this->startNewSession();
         }
 
-        $employeeData = '';
-        foreach ($getEmployeeData as $data) {
-            $employeeData .= "(Nama : ". $data->name . ", ";
-            $employeeData .= "Departermen : ". $data->department_id . ", ";
-            $employeeData .= "Jabatan : ". $data->job_title . ", ";
-            $employeeData .= "Email : ". $data->email . ", ";
-            $employeeData .= "No. HP : ". $data->phone . ", ";
-            $employeeData .= "Mulai Kerja : ". $data->hire_date . ", ";
-            $employeeData .= "Gaji : ". $data->salary . "). ";
+        $this->userInputs[] = $this->message;
+        $this->saveMessage($this->message, true);
+
+        if ($this->message == '/clear') {
+            $this->clearChat();
+            return;
         }
-        $instructionText = str_replace('[EMPLOYEE_DATA]', $employeeData, $instructionText);
-        $instructionText = str_replace('[USERNAME]', Auth::user()->employee->name, $instructionText);
+
+        if ($this->message == '/masuk' || $this->message == '/keluar') {
+            $this->handleAbsen();
+            return;
+        }
+
+        $sendChatController = new SendChatController();
+
+        $data = $sendChatController->fetchData();
+        $instructionText = $sendChatController->prosessInstruction($data['systemInstructions'], $data['employeeData'], $data['departmentData']);
 
         $systemInstructionContext = [
             [
                 'text' => $instructionText,
             ]
         ];
+        $userInputs = $this->userInputs;
+        $responses = $this->responses;
+        $maxLength = max(count($userInputs), count($responses));
 
-        $contentsContext = [];
-        foreach ($this->userInputs as $userInput) {
-            $contentsContext[] = ['text' => $userInput];
-        }
-        foreach ($this->responses as $response) {
-            $contentsContext[] = ['text' => $response];
+        for ($i = 0; $i < $maxLength; $i++) {
+            if (isset($userInputs[$i])) {
+                $contentsContext[] = ['text' => Auth::user()->employee->name . " : " . $userInputs[$i]];
+            }
+            if (isset($responses[$i])) {
+                $contentsContext[] = ['text' => "Deon : " . $responses[$i]];
+            }
         }
         $contentsContext[] = ['text' => $this->message];
 
@@ -109,12 +105,9 @@ class ChatbotComponentGemini extends Component
             ]
         ];
 
-        $response = $client->post('?key=' . env('GEMINI_API_KEY'), [
-            RequestOptions::JSON => $requestPayload,
-        ]);
-        
 
-        $unformattedData = json_decode($response->getBody(), true);
+
+        $unformattedData = $sendChatController->callApi($requestPayload);
         $botMessage = $unformattedData['candidates'][0]['content']['parts'][0]['text'];
         $data = app(MarkdownRenderer::class)->toHtml($botMessage);
 
@@ -122,11 +115,7 @@ class ChatbotComponentGemini extends Component
         $this->saveMessage($data, false);
 
         $this->message = '';
-
-    } catch (\Exception $e) {
-        $this->addError('chat', 'There was an error sending your message: ' . $e->getMessage());
     }
-}
 
 
     public function startNewSession()
@@ -151,6 +140,50 @@ class ChatbotComponentGemini extends Component
         $this->message = '';
         $this->startNewSession();
     }
+
+    public function handleAbsen()
+    {
+        $user = Auth::user();
+        $now = Carbon::now('Asia/Jakarta');
+        $todayAttendance = Attendance::where('user_id', $user->id)
+            ->whereDate('check_in_time', Carbon::today('Asia/Jakarta'))
+            ->first();
+
+        if ($this->message == '/masuk') {
+            $checkInDeadline = Carbon::createFromTime(9, 0, 0, 'Asia/Jakarta');
+            if ($now->greaterThanOrEqualTo($checkInDeadline)) {
+                $this->responses[] = 'Anda hanya bisa absen sebelum pukul 09:00.';
+            } elseif ($todayAttendance) {
+                $this->responses[] = 'Anda sudah absen hari ini.';
+            } else {
+                $attendance = Attendance::create([
+                    'user_id' => $user->id,
+                    'check_in_time' => $now,
+                ]);
+                $this->responses[] = 'Berhasil absen. Check-in time: ' . $attendance->check_in_time;
+            }
+        }
+
+        if ($this->message == '/keluar') {
+            $checkOutStartTime = Carbon::createFromTime(17, 0, 0, 'Asia/Jakarta');
+            if ($now->lessThanOrEqualTo($checkOutStartTime)) {
+                $this->responses[] = 'Anda hanya bisa check-out setelah pukul 17:00.';
+            } elseif ($todayAttendance && !$todayAttendance->check_out_time) {
+                $todayAttendance->update([
+                    'check_out_time' => $now,
+                ]);
+                $this->responses[] = 'Berhasil check-out. Check-out time: ' . $todayAttendance->check_out_time;
+            } elseif ($todayAttendance && $todayAttendance->check_out_time) {
+                $this->responses[] = 'Anda sudah check-out hari ini.';
+            } else {
+                $this->responses[] = 'Anda belum absen hari ini.';
+            }
+        }
+
+        $this->saveMessage(end($this->responses), false);
+        $this->message = '';
+    }
+
     public function render()
     {
         return view('livewire.chatbot-component-gemini');

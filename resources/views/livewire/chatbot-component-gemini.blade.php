@@ -28,7 +28,6 @@
             @endif
         @endforeach
 
-
         <div class="flex justify-center my-5">
             <x-button wire:click="clearChat">{{ __('Hapus Chat') }}
             </x-button>

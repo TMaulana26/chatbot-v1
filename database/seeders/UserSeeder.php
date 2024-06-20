@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
         // Employee User(s)
         $employeeRole = Role::where('name', 'employee')->first();
-        for ($i = 1; $i <= 5; $i++) { 
+        for ($i = 1; $i <= 10; $i++) { 
             User::create([
                 'name' => "Mtim $i",
                 'email' => "employee$i@$i.com",

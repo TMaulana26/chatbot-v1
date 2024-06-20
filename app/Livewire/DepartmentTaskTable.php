@@ -19,8 +19,8 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
 final class DepartmentTaskTable extends PowerGridComponent
 {
-    use WithExport;
-
+    protected $listeners = ['reloadPage' => '$refresh'];
+    
     public function setUp(): array
     {
         return [
@@ -33,7 +33,7 @@ final class DepartmentTaskTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return DepartmentTask::query();
+        return DepartmentTask::query()->with('department');
     }
 
     public function relationSearch(): array
@@ -48,6 +48,7 @@ final class DepartmentTaskTable extends PowerGridComponent
             ->add('title')
             ->add('description')
             ->add('department_id')
+            ->add('department_name', fn($row) => e($row->department->name))
             ->add('status')
             ->add('due_date_formatted', fn (DepartmentTask $model) => Carbon::parse($model->due_date)->format('d/m/Y'))
             ->add('created_at')
@@ -66,7 +67,14 @@ final class DepartmentTaskTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Department id', 'department_id'),
+            Column::make('Department id', 'department_id')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Department name', 'department_name')
+            ->sortable()
+            ->searchable(),
+            
             Column::make('Status', 'status')
                 ->sortable()
                 ->searchable(),
