@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartmentTask;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Employee;
@@ -18,11 +19,13 @@ class SendChatController extends Controller
         $systemInstructions = SystemInstruction::all();
         $employeeData = Employee::all();
         $departmentData = Department::all();
+        $departmentTasksData = DepartmentTask::all();
+        $attendanceData = Auth::user()->attendances;
 
-        return compact('systemInstructions', 'employeeData', 'departmentData');
+        return compact('systemInstructions', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData');
     }
 
-    public function prosessInstruction($systemInstructions, $employeeData, $departmentData)
+    public function prosessInstruction($systemInstructions, $employeeData, $departmentData, $departmentTasksData, $attendanceData)
     {
         $instructionText = '';
         foreach ($systemInstructions as $instruction) {
@@ -48,11 +51,36 @@ class SendChatController extends Controller
             $departmentDataText .= "Tugas : " . $data->tasks->pluck('title')->last() . " ) \n";
         }
 
+        $departmentTasksDataText = '';
+        foreach ($departmentTasksData as $data) {
+            $departmentTasksDataText .= "(Tugas : " . $data->id . ", ";
+            $departmentTasksDataText .= "Departemen : " . $data->department_id . ", ";
+            $departmentTasksDataText .= "Judul : " . $data->title . ", ";
+            $departmentTasksDataText .= "Deskripsi : " . $data->description . ",";
+            $departmentTasksDataText .= "Status : " . $data->status . ", ";
+            $departmentTasksDataText .= "Deadline : " . $data->due_date . " ) \n";
+        }
+
+        $attendanceDataText = '';
+        foreach ($attendanceData as $data) {
+            $attendanceDataText .= "(Kerja : " . $data->employee_id . ", ";
+            $attendanceDataText .= "Nama : " . $data->user->name . ", ";
+            $attendanceDataText .= "Masuk : " . $data->check_in_time . ", ";
+            $attendanceDataText .= "Keluar : " . $data->check_out_time . " ) \n";
+        }
+
         $currentTime = Carbon::now('Asia/Jakarta')->format('d/m/y H:i');
         $instructionText = str_replace('[NOW]', $currentTime, $instructionText);
         $instructionText = str_replace('[EMPLOYEE_DATA]', $employeeDataText, $instructionText);
         $instructionText = str_replace('[USERNAME]', Auth::user()->employee->name, $instructionText);
         $instructionText = str_replace('[DEPARTMENT_DATA]', $departmentDataText, $instructionText);
+        $instructionText = str_replace('[DEPARTMENT_TASK_DATA]', $departmentTasksDataText, $instructionText);
+        if (empty($attendanceDataText)) {
+            $attendanceDataText = "(Belum Melakukan Absensi)";
+            $instructionText = str_replace('[ATTENDANCE_DATA]', $attendanceDataText, $instructionText);
+        } else {
+            $instructionText = str_replace('[ATTENDANCE_DATA]', $attendanceDataText, $instructionText);
+        }
 
         return $instructionText;
     }

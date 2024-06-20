@@ -33,6 +33,12 @@
             </x-button>
         </div>
     </div>
+    @error('message')
+        <div x-data="{ showError: true }" x-init="setTimeout(() => { showError = false }, 2000);" x-show.transition.opacity.duration.500ms="showError"
+            class="flex justify-center">
+            <span class="text-red-600 text-center">Pesan tidak bisa kosong</span>
+        </div>
+    @enderror
     <div class="fixed bottom-0 left-0 mb-8 w-full">
         <form class="flex justify-center w-full" wire:submit.prevent="chat">
             <input

@@ -74,5 +74,15 @@ class SystemInstructionSeeder extends Seeder
             'instruction' => 'Berikut merupaka data data department di perusahaan, [DEPARTMENT_DATA], Gunakan jika user menanyakan tentang data department, jika tidak, tidak usah di gunakan.'
         ]);
 
+        SystemInstruction::create([
+            'name' => 'Integrasi Tugas Department',
+            'instruction' => 'Berikut merupaka data data tugas di per department, [DEPARTMENT_TASK_DATA], Gunakan jika user menanyakan tentang tugas department, jika tidak, tidak usah di gunakan.'
+        ]);
+
+        SystemInstruction::create([
+            'name' => 'Integrasi Absensi',
+            'instruction' => 'Berikut merupaka data data absensi user, [ATTENDANCE_DATA], Gunakan jika user menanyakan tentang absensi, jika tidak, tidak usah di gunakan.'
+        ]);
+
     }
 }

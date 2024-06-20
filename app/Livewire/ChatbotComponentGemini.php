@@ -24,6 +24,10 @@ class ChatbotComponentGemini extends Component
     public $responses = [];
     public $contentsContext = [];
     public $currentSessionId;
+
+    protected $rules = [
+        'message' => 'required',
+    ];
     
 
     public function mount()
@@ -55,6 +59,8 @@ class ChatbotComponentGemini extends Component
 
     public function chat()
     {
+        $this->validate();
+        
         if (!$this->currentSessionId) {
             $this->startNewSession();
         }
@@ -75,7 +81,9 @@ class ChatbotComponentGemini extends Component
         $sendChatController = new SendChatController();
 
         $data = $sendChatController->fetchData();
-        $instructionText = $sendChatController->prosessInstruction($data['systemInstructions'], $data['employeeData'], $data['departmentData']);
+        $instructionText = $sendChatController->prosessInstruction($data['systemInstructions'], $data['employeeData'], $data['departmentData'], $data['departmentTasksData'], $data['attendanceData']);
+
+        // dd($instructionText);
 
         $systemInstructionContext = [
             [
