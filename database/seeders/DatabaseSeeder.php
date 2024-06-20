@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SystemInstructionSeeder::class,
             DepartmentSeeder::class,
             EmployeeSeeder::class,
+            AttendanceSeeder::class,
         ]);
     }
 }

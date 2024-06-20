@@ -151,9 +151,9 @@ class ChatbotComponentGemini extends Component
 
     public function handleAbsen()
     {
-        $user = Auth::user();
+        $user = Auth::user()->employee;
         $now = Carbon::now('Asia/Jakarta');
-        $todayAttendance = Attendance::where('user_id', $user->id)
+        $todayAttendance = Attendance::where('employee_id', $user->id)
             ->whereDate('check_in_time', Carbon::today('Asia/Jakarta'))
             ->first();
 
@@ -165,7 +165,7 @@ class ChatbotComponentGemini extends Component
                 $this->responses[] = 'Anda sudah absen hari ini.';
             } else {
                 $attendance = Attendance::create([
-                    'user_id' => $user->id,
+                    'employee_id' => $user->id,
                     'check_in_time' => $now,
                 ]);
                 $this->responses[] = 'Berhasil absen. Check-in time: ' . $attendance->check_in_time;

@@ -22,6 +22,7 @@
                         </div>
                         <livewire:employee-modal />
                         <livewire:employee-table />
+                        <livewire:attendance-table/>
                     </div>
                 </div>
             </div>

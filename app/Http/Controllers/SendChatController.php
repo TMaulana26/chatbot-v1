@@ -20,7 +20,7 @@ class SendChatController extends Controller
         $employeeData = Employee::all();
         $departmentData = Department::all();
         $departmentTasksData = DepartmentTask::all();
-        $attendanceData = Auth::user()->attendances;
+        $attendanceData = Employee::find(Auth::user()->id)->attendances;
 
         return compact('systemInstructions', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData');
     }
@@ -63,8 +63,8 @@ class SendChatController extends Controller
 
         $attendanceDataText = '';
         foreach ($attendanceData as $data) {
-            $attendanceDataText .= "(Kerja : " . $data->employee_id . ", ";
-            $attendanceDataText .= "Nama : " . $data->user->name . ", ";
+            $attendanceDataText .= "(Kerja : " . $data->id . ", ";
+            $attendanceDataText .= "Nama : " . $data->employee->name . ", ";
             $attendanceDataText .= "Masuk : " . $data->check_in_time . ", ";
             $attendanceDataText .= "Keluar : " . $data->check_out_time . " ) \n";
         }
