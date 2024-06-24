@@ -4,30 +4,25 @@ namespace App\Livewire;
 
 use App\Models\Attendance;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
-use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
 final class AttendanceTable extends PowerGridComponent
 {
-    use WithExport;
-
+    protected $listeners = ['reloadPage' => '$refresh'];
     public function setUp(): array
     {
-        $this->showCheckBox();
-
         return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
@@ -53,7 +48,8 @@ final class AttendanceTable extends PowerGridComponent
             ->add('employee_id')
             ->add('check_in_time')
             ->add('check_out_time')
-            ->add('created_at');
+            ->add('created_at')
+            ->add('updated_at');
     }
 
     public function columns(): array
@@ -67,23 +63,38 @@ final class AttendanceTable extends PowerGridComponent
 
             Column::make('Employee id', 'employee_id'),
             Column::make('Check in time', 'check_in_time_formatted', 'check_in_time')
-                ->sortable(),
+                ->sortable()
+                ->searchable()
+                ->hidden(),
 
             Column::make('Check in time', 'check_in_time')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Check out time', 'check_out_time_formatted', 'check_out_time')
-                ->sortable(),
+                ->sortable()
+                ->searchable()
+                ->hidden(),
 
             Column::make('Check out time', 'check_out_time')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->sortable(),
+                ->sortable()
+                ->searchable()
+                ->hidden(),
 
             Column::make('Created at', 'created_at')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Updated at', 'updated_at_formatted', 'updated_at')
+                ->sortable()
+                ->searchable()
+                ->hidden(),
+
+            Column::make('Updated at', 'updated_at')
                 ->sortable()
                 ->searchable(),
 
@@ -97,20 +108,22 @@ final class AttendanceTable extends PowerGridComponent
         ];
     }
 
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
-    {
-        $this->js('alert('.$rowId.')');
-    }
-
     public function actions(Attendance $row): array
     {
         return [
             Button::add('edit')
-                ->slot('Edit: '.$row->id)
-                ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
+                ->render(function ($rowId) {
+                    return Blade::render(<<<HTML
+                    <x-success-button onclick="Livewire.dispatch('ModalEdit', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-pen-to-square"></i></x-success-button>
+                HTML);
+                }),
+
+            Button::add('delete')
+                ->render(function ($rowId) {
+                    return Blade::render(<<<HTML
+                    <x-danger-button onclick="Livewire.dispatch('ModalDelete', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-trash"></i></x-danger-button>
+                HTML);
+                }),
         ];
     }
 

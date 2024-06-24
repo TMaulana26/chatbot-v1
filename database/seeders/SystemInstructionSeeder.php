@@ -26,7 +26,12 @@ class SystemInstructionSeeder extends Seeder
 
         SystemInstruction::create([
             'name' => 'Asisten HR Virtual',
-            'instruction' => 'Anda adalah chatbot AI yang dirancang khusus untuk membantu karyawan dan calon karyawan PT KAI DAOP 1 Jakarta.'
+            'instruction' => 'Anda adalah chatbot AI yang dirancang khusus untuk membantu karyawan PT KAI DAOP 1 Jakarta.'
+        ]);
+
+        SystemInstruction::create([
+            'name' => 'Menggunakan Chatbot untuk Absen',
+            'instruction' => 'Jika user ingin menggunakan chatbot untuk absen masuk maka tulis "/masuk" dan "/keluar" jika ingin absen keluar, user hanya bisa absen keluar jika sudah absen masuk.'
         ]);
 
         SystemInstruction::create([

@@ -43,15 +43,17 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="mt-4">
-                <x-label for="name" :value="__('Name')" />
-                <x-input id="name" class="block mt-1 w-full" type="text" wire:model="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="instruction" :value="__('Instruction')" />
-                <x-input id="instruction" class="block mt-1 w-full" wire:model="instruction" />
-            </div>
+            <form wire:keydown.enter="update">
+                <div class="mt-4">
+                    <x-label for="name" :value="__('Name')" />
+                    <x-input id="name" class="block mt-1 w-full" type="text" wire:model="name" />
+                </div>
+    
+                <div class="mt-4">
+                    <x-label for="instruction" :value="__('Instruction')" />
+                    <x-input id="instruction" class="block mt-1 w-full" wire:model="instruction" />
+                </div>
+            </form>
         </x-slot>
 
         <x-slot name="footer">

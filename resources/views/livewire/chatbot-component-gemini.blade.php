@@ -28,24 +28,28 @@
             @endif
         @endforeach
 
+        <livewire:apply-sick-modal />
+
         <div class="flex justify-center my-5">
-            <x-button wire:click="clearChat">{{ __('Hapus Chat') }}
-            </x-button>
+            <x-button wire:click="clearChat">{{ __('Hapus Chat') }}</x-button>
         </div>
     </div>
+
     @error('message')
         <div x-data="{ showError: true }" x-init="setTimeout(() => { showError = false }, 2000);" x-show.transition.opacity.duration.500ms="showError"
             class="flex justify-center">
             <span class="text-red-600 text-center">Pesan tidak bisa kosong</span>
         </div>
     @enderror
+
     <div class="fixed bottom-0 left-0 mb-8 w-full">
         <form class="flex justify-center w-full" wire:submit.prevent="chat">
             <input
                 class="w-1/2 shadow appearance-none border rounded py-2 px-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text" wire:model.defer="message" wire:loading.class="opacity-20" wire:target="chat"
                 placeholder="Chat dengan BOT lalu tekan enter atau klik tombol kirim">
-            <x-secondary-button type="submit">{{ __('Kirim') }}</x-secondary-button>
+            <x-secondary-button type="submit" wire:loading.attr="disabled"
+                wire:target="chat">{{ __('Kirim') }}</x-secondary-button>
         </form>
     </div>
 </div>

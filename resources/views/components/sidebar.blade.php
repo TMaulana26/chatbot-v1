@@ -64,6 +64,12 @@
             </x-responsive-nav-link>
         </div>
         <div class="px-4 py-2">
+            <x-responsive-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
+                <i class="fas fa-briefcase"></i>
+                <span class="ml-3" x-show="isOpen">Employees Attendance</span>
+            </x-responsive-nav-link>
+        </div>
+        <div class="px-4 py-2">
             <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
                 <i class="fas fa-robot"></i>
                 <span class="ml-3" x-show="isOpen">Chabot Gemini</span>

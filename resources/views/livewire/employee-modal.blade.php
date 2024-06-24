@@ -8,57 +8,59 @@
 
             <x-slot name="content">
                 {{ __('Create A New Employee') }}
-                <div class="">
-                    <x-label for="userId" value="{{ __('User Id') }}" />
-                    <select id="userId" x-init="$nextTick(() => { $('#userId').select2(); })" x-on:change="userId = $event.target.value"
-                        class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
-                        <option value="">{{ __('Select a User') }}</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->id }} : {{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="">
-                    <x-label for="name" value="{{ __('Name') }}" />
-                    <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" />
-                    <x-input-error for="name" class="mt-2" />
-                </div>
-
-                <div class="">
-                    <x-label for="jobTitle" value="{{ __('Job Title') }}" />
-                    <x-input id="jobTitle" type="text" class="mt-1 block w-full" wire:model.defer="jobTitle" />
-                    <x-input-error for="jobTitle" class="mt-2" />
-                </div>
-
-                <div class="">
-                    <x-label for="department_id" value="{{ __('Department') }}" />
-                    <select id="department_id" wire:model.defer="department_id"
-                        class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
-                        <option value="">{{ __('Select a Department') }}</option>
-                        @foreach ($departments as $department)
-                            <option value="{{ $department->id }}">{{ $department->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="">
-                    <x-label for="phone" value="{{ __('Phone') }}" />
-                    <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" />
-                    <x-input-error for="phone" class="mt-2" />
-                </div>
-
-                <div class="">
-                    <x-label for="hireDate" value="{{ __('Hire Date') }}" />
-                    <x-input id="hireDate" type="date" class="mt-1 block w-full" wire:model.defer="hireDate" />
-                    <x-input-error for="hireDate" class="mt-2" />
-                </div>
-
-                <div class="">
-                    <x-label for="salary" value="{{ __('Salary') }}" />
-                    <x-input id="salary" type="text" class="mt-1 block w-full" wire:model.defer="salary" />
-                    <x-input-error for="salary" class="mt-2" />
-                </div>
+                <form wire:keydown.enter="createEmployee">
+                    <div class="">
+                        <x-label for="userId" value="{{ __('User Id') }}" />
+                        <select id="userId" x-init="$nextTick(() => { $('#userId').select2(); })" x-on:change="userId = $event.target.value"
+                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                            <option value="">{{ __('Select a User') }}</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->id }} : {{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+    
+                    <div class="">
+                        <x-label for="name" value="{{ __('Name') }}" />
+                        <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" />
+                        <x-input-error for="name" class="mt-2" />
+                    </div>
+    
+                    <div class="">
+                        <x-label for="jobTitle" value="{{ __('Job Title') }}" />
+                        <x-input id="jobTitle" type="text" class="mt-1 block w-full" wire:model.defer="jobTitle" />
+                        <x-input-error for="jobTitle" class="mt-2" />
+                    </div>
+    
+                    <div class="">
+                        <x-label for="department_id" value="{{ __('Department') }}" />
+                        <select id="department_id" wire:model.defer="department_id"
+                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                            <option value="">{{ __('Select a Department') }}</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+    
+                    <div class="">
+                        <x-label for="phone" value="{{ __('Phone') }}" />
+                        <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" />
+                        <x-input-error for="phone" class="mt-2" />
+                    </div>
+    
+                    <div class="">
+                        <x-label for="hireDate" value="{{ __('Hire Date') }}" />
+                        <x-input id="hireDate" type="date" class="mt-1 block w-full" wire:model.defer="hireDate" />
+                        <x-input-error for="hireDate" class="mt-2" />
+                    </div>
+    
+                    <div class="">
+                        <x-label for="salary" value="{{ __('Salary') }}" />
+                        <x-input id="salary" type="text" class="mt-1 block w-full" wire:model.defer="salary" />
+                        <x-input-error for="salary" class="mt-2" />
+                    </div>
+                </form>
             </x-slot>
 
             <x-slot name="footer">
@@ -90,46 +92,48 @@
 
         <x-slot name="content">
             {{ __('Edit An Employee') }}
-            <div class="">
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" />
-                <x-input-error for="name" class="mt-2" />
-            </div>
-
-            <div class="">
-                <x-label for="jobTitle" value="{{ __('Job Title') }}" />
-                <x-input id="jobTitle" type="text" class="mt-1 block w-full" wire:model.defer="jobTitle" />
-                <x-input-error for="jobTitle" class="mt-2" />
-            </div>
-
-            <div class="">
-                <x-label for="department_id" value="{{ __('Department') }}" />
-                <select id="department_id" wire:model.defer="department_id"
-                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
-                    <option value="">{{ __('Select a Department') }}</option>
-                    @foreach ($departments as $department)
-                        <option value="{{ $department->id }}">{{ $department->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="">
-                <x-label for="phone" value="{{ __('Phone') }}" />
-                <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" />
-                <x-input-error for="phone" class="mt-2" />
-            </div>
-
-            <div class="">
-                <x-label for="hireDate" value="{{ __('Hire Date') }}" />
-                <x-input id="hireDate" type="date" class="mt-1 block w-full" wire:model.defer="hireDate" />
-                <x-input-error for="hireDate" class="mt-2" />
-            </div>
-
-            <div class="">
-                <x-label for="salary" value="{{ __('Salary') }}" />
-                <x-input id="salary" type="text" class="mt-1 block w-full" wire:model.defer="salary" />
-                <x-input-error for="salary" class="mt-2" />
-            </div>
+            <form wire:keydown.enter="update">
+                <div class="">
+                    <x-label for="name" value="{{ __('Name') }}" />
+                    <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" />
+                    <x-input-error for="name" class="mt-2" />
+                </div>
+    
+                <div class="">
+                    <x-label for="jobTitle" value="{{ __('Job Title') }}" />
+                    <x-input id="jobTitle" type="text" class="mt-1 block w-full" wire:model.defer="jobTitle" />
+                    <x-input-error for="jobTitle" class="mt-2" />
+                </div>
+    
+                <div class="">
+                    <x-label for="department_id" value="{{ __('Department') }}" />
+                    <select id="department_id" wire:model.defer="department_id"
+                        class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                        <option value="">{{ __('Select a Department') }}</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}">{{ $department->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+    
+                <div class="">
+                    <x-label for="phone" value="{{ __('Phone') }}" />
+                    <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" />
+                    <x-input-error for="phone" class="mt-2" />
+                </div>
+    
+                <div class="">
+                    <x-label for="hireDate" value="{{ __('Hire Date') }}" />
+                    <x-input id="hireDate" type="date" class="mt-1 block w-full" wire:model.defer="hireDate" />
+                    <x-input-error for="hireDate" class="mt-2" />
+                </div>
+    
+                <div class="">
+                    <x-label for="salary" value="{{ __('Salary') }}" />
+                    <x-input id="salary" type="text" class="mt-1 block w-full" wire:model.defer="salary" />
+                    <x-input-error for="salary" class="mt-2" />
+                </div>
+            </form>
         </x-slot>
 
         <x-slot name="footer">

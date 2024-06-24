@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Users Management CRUD ') }}
+            {{ __('Employee Attendance CRUD ') }}
         </h2>
     </x-slot>
 
@@ -13,15 +13,15 @@
                     <div class="flex flex-col justify-center">
                         <x-application-logo class="block h-10 w-auto" />
                         <p class="font-bold text-gray-500 text-center mt-2 italic">
-                            {{ __('Users Management ') }}
+                            {{ __('Employee Attendance ') }}
                         </p>
                     </div>
                     <div class="m-4">
                         <div class="flex justify-center mt-4">
-                            <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add User') }}</x-button>
+                            <x-button onclick="Livewire.dispatch('ModalAdd')">{{ __('Add Attendance to Employee') }}</x-button>
                         </div>
-                        <livewire:user-management-modal />
-                        <livewire:user-table />
+                        <livewire:attendance-management-modal />
+                        <livewire:attendance-table/>
                     </div>
                 </div>
             </div>
@@ -30,3 +30,4 @@
 
 
 </x-app-layout>
+

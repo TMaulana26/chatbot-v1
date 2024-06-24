@@ -24,11 +24,12 @@ class ChatbotComponentGemini extends Component
     public $responses = [];
     public $contentsContext = [];
     public $currentSessionId;
+    protected $listeners = ['responseApplySick', 'refreshChat'];
 
     protected $rules = [
         'message' => 'required',
     ];
-    
+
 
     public function mount()
     {
@@ -60,7 +61,7 @@ class ChatbotComponentGemini extends Component
     public function chat()
     {
         $this->validate();
-        
+
         if (!$this->currentSessionId) {
             $this->startNewSession();
         }
@@ -78,12 +79,15 @@ class ChatbotComponentGemini extends Component
             return;
         }
 
+        if ($this->message == '/sakit' || $this->message == '/cuti') {
+            $this->handleSickOrVacation();
+            return;
+        }
+
         $sendChatController = new SendChatController();
 
         $data = $sendChatController->fetchData();
         $instructionText = $sendChatController->prosessInstruction($data['systemInstructions'], $data['employeeData'], $data['departmentData'], $data['departmentTasksData'], $data['attendanceData']);
-
-        // dd($instructionText);
 
         $systemInstructionContext = [
             [
@@ -112,8 +116,6 @@ class ChatbotComponentGemini extends Component
                 'parts' => $contentsContext
             ]
         ];
-
-
 
         $unformattedData = $sendChatController->callApi($requestPayload);
         $botMessage = $unformattedData['candidates'][0]['content']['parts'][0]['text'];
@@ -160,15 +162,15 @@ class ChatbotComponentGemini extends Component
         if ($this->message == '/masuk') {
             $checkInDeadline = Carbon::createFromTime(9, 0, 0, 'Asia/Jakarta');
             if ($now->greaterThanOrEqualTo($checkInDeadline)) {
-                $this->responses[] = 'Anda hanya bisa absen sebelum pukul 09:00.';
+                $this->responses[] = 'Anda hanya bisa absen masuk sebelum pukul 09:00.';
             } elseif ($todayAttendance) {
-                $this->responses[] = 'Anda sudah absen hari ini.';
+                $this->responses[] = 'Anda sudah absen masuk hari ini.';
             } else {
                 $attendance = Attendance::create([
                     'employee_id' => $user->id,
                     'check_in_time' => $now,
                 ]);
-                $this->responses[] = 'Berhasil absen. Check-in time: ' . $attendance->check_in_time;
+                $this->responses[] = 'Berhasil absen masuk. Check-in time: ' . $attendance->check_in_time;
             }
         }
 
@@ -180,9 +182,9 @@ class ChatbotComponentGemini extends Component
                 $todayAttendance->update([
                     'check_out_time' => $now,
                 ]);
-                $this->responses[] = 'Berhasil check-out. Check-out time: ' . $todayAttendance->check_out_time;
+                $this->responses[] = 'Berhasil absen keluar. Check-out time: ' . $todayAttendance->check_out_time;
             } elseif ($todayAttendance && $todayAttendance->check_out_time) {
-                $this->responses[] = 'Anda sudah check-out hari ini.';
+                $this->responses[] = 'Anda sudah absen keluar hari ini.';
             } else {
                 $this->responses[] = 'Anda belum absen hari ini.';
             }
@@ -190,6 +192,45 @@ class ChatbotComponentGemini extends Component
 
         $this->saveMessage(end($this->responses), false);
         $this->message = '';
+    }
+    public function handleSickOrVacation()
+    {
+        if ($this->message == '/sakit') {
+            $this->dispatch('ModalApplySick');
+            $this->responses[] = "Silahkan isi form-nya, nanti akan di simpan pengajuannya jika sudah di isi.";
+        }
+
+        if ($this->message == '/cuti') {
+            $this->dispatch('ModalApplyVacation');
+            $this->responses[] = "Silahkan isi form-nya, nanti akan di simpan pengajuannya jika sudah di isi.";
+        }
+
+        $this->saveMessage(end($this->responses), false);
+        $this->message = '';
+    }
+
+    public function responseApplySick($data)
+    {
+        if ($data['type'] == 'sick') {
+            $this->userInputs[] = $userInput = 'selesai';
+            $this->saveMessage($userInput, true);
+            $this->responses[] = $response = 'Tanggal izin sakit yang anda ajukan : ';
+            $this->saveMessage($response . $data['date'], false);
+        } else if ($data['type'] == 'vacation') {
+            $this->userInputs[] = $userInput = 'selesai';
+            $this->saveMessage($userInput, true);
+            $this->responses[] = $response = 'Tanggal izin cuti yang anda ajukan : ';
+            $this->saveMessage($response . $data['date'], false);
+        }
+
+        $this->dispatch('refreshChat');
+    }
+
+    public function refreshChat()
+    {
+        $this->userInputs = [];
+        $this->responses = [];
+        $this->loadMessages();
     }
 
     public function render()

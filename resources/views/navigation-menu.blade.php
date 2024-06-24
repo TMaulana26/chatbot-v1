@@ -30,6 +30,9 @@
                     <x-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                         {{ __('Employees Management') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
+                        {{ __('Employees Attendance') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
                         {{ __('Chabot Gemini') }}
                     </x-nav-link>
@@ -177,6 +180,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
                 {{ __('Employees Management') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
+                {{ __('Employees Attendance') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
                 {{ __('Chabot Gemini') }}

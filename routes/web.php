@@ -1,11 +1,12 @@
 <?php
 
-use App\Livewire\DepartmentManagement;
-use App\Livewire\EmployeeManagement;
 use App\Livewire\TaskManagement;
 use App\Livewire\UsersManagement;
 use App\Livewire\SystemInstruction;
+use App\Livewire\EmployeeManagement;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\AttendanceManagement;
+use App\Livewire\DepartmentManagement;
 use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
@@ -43,11 +44,10 @@ Route::middleware([
         Route::group(['prefix' => 'department-tasks-management'], function () {
            Route::get('/', [TaskManagement::class, 'render'])->name('department-tasks-management.index'); 
         });
+        Route::group(['prefix' => 'attendance-management'], function () {
+            Route::get('/', [AttendanceManagement::class, 'render'])->name('attendance-management.index');
+        });
     });
-
-
-
-
 
     Route::post('/chatbot-2/session', [ChatController::class, 'createSession']);
     Route::post('/chatbot-2/message', [ChatController::class, 'addMessage']);
