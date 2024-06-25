@@ -11,6 +11,7 @@ class ApplySickModal extends Component
 {
     public $modalApplySick = false;
     public $modalApplyVacation = false;
+    public $modalAdd = false;
     public $employeeId;
     public $leaveDate;
     public $reason;
@@ -21,7 +22,7 @@ class ApplySickModal extends Component
         'reason' => 'required',
     ];
 
-    protected $listeners = ['ModalApplySick', 'ModalApplyVacation'];
+    protected $listeners = ['ModalApplySick', 'ModalApplyVacation', 'ModalAdd'];
 
     public function ModalApplySick()
     {
@@ -35,6 +36,12 @@ class ApplySickModal extends Component
         $this->resetForm();
         $this->employeeId = Auth::user()->employee->id;
         $this->modalApplyVacation = true;
+    }
+
+    public function ModalAdd()
+    {
+        $this->resetForm();
+        $this->modalAdd = true;
     }
 
     public function applySick()
@@ -64,6 +71,37 @@ class ApplySickModal extends Component
 
         $this->modalApplyVacation = false;
         $this->dispatch('responseApplySick', ['type' => 'vacation', 'date' => $this->leaveDate]);
+        $this->resetForm();
+    }
+
+    public function addLeave()
+    {
+        $this->validate([
+            'typeLeave' => 'required|string',
+            'employeeId' => 'required|integer',
+            'leaveDate' => 'required|date',
+            'reason' => 'required|string|max:255',
+        ]);
+
+        if ($this->typeLeave === 'sick') {
+            SickLeave::create([
+                'employee_id' => $this->employeeId,
+                'leave_date' => $this->leaveDate,
+                'reason' => $this->reason,
+            ]);
+        } elseif ($this->typeLeave === 'vacation') {
+            VacationLeave::create([
+                'employee_id' => $this->employeeId,
+                'leave_date' => $this->leaveDate,
+                'reason' => $this->reason,
+            ]);
+        } elseif ($this->typeLeave === 'null') {
+            $this->addError('typeLeave', 'Please select a valid type of leave.');
+            return;
+        }
+
+        $this->modalAdd = false;
+        $this->dispatch('reloadPage');
         $this->resetForm();
     }
 

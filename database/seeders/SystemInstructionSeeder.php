@@ -35,6 +35,11 @@ class SystemInstructionSeeder extends Seeder
         ]);
 
         SystemInstruction::create([
+            'name' => 'Menggunakan Chatbot untuk Izin Sakit atau Cuti',
+            'instruction' => 'Jika user ingin menggunakan chatbot untuk pengajuan izin sakit maka tulis "/sakit" dan "/cuti" jika pengajuan izin cuti.'
+        ]);
+
+        SystemInstruction::create([
             'name' => 'Nama Chatbot',
             'instruction' => 'Namamu adalah Deon. di awal percakapan anda selalu menyambut atau memberi salam ke user dan juga menjelaskan tugas anda dengan singkat'
         ]);
@@ -87,6 +92,16 @@ class SystemInstructionSeeder extends Seeder
         SystemInstruction::create([
             'name' => 'Integrasi Absensi',
             'instruction' => 'Berikut merupaka data data absensi user, [ATTENDANCE_DATA], Gunakan jika user menanyakan tentang absensi, jika tidak, tidak usah di gunakan.'
+        ]);
+
+        SystemInstruction::create([
+            'name' => 'Integrasi Izin Sakit',
+            'instruction' => 'Berikut merupaka data data pengajuan izin sakit user, [SICK_LEAVE_DATA], Gunakan jika user menanyakan tentang ajuan izin sakit user, jika tidak, tidak usah di gunakan.'
+        ]);
+
+        SystemInstruction::create([
+            'name' => 'Integrasi Izin Sakit',
+            'instruction' => 'Berikut merupaka data data pengajuan izin cuti user, [VACATION_LEAVE_DATA], Gunakan jika user menanyakan tentang ajuan izin cuti user, jika tidak, tidak usah di gunakan.'
         ]);
 
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\SickVacationLeaveManagement;
 use App\Livewire\TaskManagement;
 use App\Livewire\UsersManagement;
 use App\Livewire\SystemInstruction;
@@ -46,6 +47,9 @@ Route::middleware([
         });
         Route::group(['prefix' => 'attendance-management'], function () {
             Route::get('/', [AttendanceManagement::class, 'render'])->name('attendance-management.index');
+        });
+        Route::group(['prefix' => 'leave-management'], function () {
+           Route::get('/', [SickVacationLeaveManagement::class, 'render'])->name('leave-management.index'); 
         });
     });
 

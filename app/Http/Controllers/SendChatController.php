@@ -21,11 +21,13 @@ class SendChatController extends Controller
         $departmentData = Department::all();
         $departmentTasksData = DepartmentTask::all();
         $attendanceData = Employee::find(Auth::user()->id)->attendances;
+        $sickLeaveData = Employee::find(Auth::user()->id)->sickLeaves;
+        $vactionLeaveData = Employee::find(Auth::user()->id)->vacationLeaves;
 
-        return compact('systemInstructions', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData');
+        return compact('systemInstructions', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData', 'sickLeaveData', 'vactionLeaveData');
     }
 
-    public function prosessInstruction($systemInstructions, $employeeData, $departmentData, $departmentTasksData, $attendanceData)
+    public function prosessInstruction($systemInstructions, $employeeData, $departmentData, $departmentTasksData, $attendanceData, $sickLeaveData, $vactionLeaveData)
     {
         $instructionText = '';
         foreach ($systemInstructions as $instruction) {
@@ -69,17 +71,52 @@ class SendChatController extends Controller
             $attendanceDataText .= "Keluar : " . $data->check_out_time . " ) \n";
         }
 
+        $sickLeaveDataText = '';
+        foreach ($sickLeaveData as $data) {
+            $sickLeaveDataText .= "(Sakit : " . $data->id . ", ";
+            $sickLeaveDataText .= "Karyawan : " . $data->employee->name . ", ";
+            $sickLeaveDataText .= "Tanggal Izin : " . $data->leave_date . ", ";
+            $sickLeaveDataText .= "Alasan : " . $data->reason . ", ";
+            $sickLeaveDataText .= "Status : " . $data->status . " ) \n";
+        }
+
+        $vactionLeaveDataText = '';
+        foreach ($vactionLeaveData as $data) {
+            $vactionLeaveDataText .= "(Cuti : " . $data->id . ", ";
+            $vactionLeaveDataText .= "Karyawan : " . $data->employee->name . ", ";
+            $vactionLeaveDataText .= "Tanggal Izin : " . $data->leave_date . ", ";
+            $vactionLeaveDataText .= "Alasan : " . $data->reason . ", ";
+            $vactionLeaveDataText .= "Status : " . $data->status . " ) \n";
+        }
+
         $currentTime = Carbon::now('Asia/Jakarta')->format('d/m/y H:i');
         $instructionText = str_replace('[NOW]', $currentTime, $instructionText);
         $instructionText = str_replace('[EMPLOYEE_DATA]', $employeeDataText, $instructionText);
         $instructionText = str_replace('[USERNAME]', Auth::user()->employee->name, $instructionText);
         $instructionText = str_replace('[DEPARTMENT_DATA]', $departmentDataText, $instructionText);
         $instructionText = str_replace('[DEPARTMENT_TASK_DATA]', $departmentTasksDataText, $instructionText);
+        $instructionText = str_replace('[SICK_LEAVE_DATA]', $sickLeaveDataText, $instructionText);
+        $instructionText = str_replace('[VACATION_LEAVE_DATA]', $vactionLeaveDataText, $instructionText);
+
         if (empty($attendanceDataText)) {
             $attendanceDataText = "(Belum Melakukan Absensi)";
             $instructionText = str_replace('[ATTENDANCE_DATA]', $attendanceDataText, $instructionText);
         } else {
             $instructionText = str_replace('[ATTENDANCE_DATA]', $attendanceDataText, $instructionText);
+        }
+
+        if (empty($sickLeaveDataText)) {
+            $sickLeaveDataText = "(Belum Melakukan Pengajuan Izin Sakit)";
+            $instructionText = str_replace('[SICK_LEAVE_DATA]', $sickLeaveDataText, $instructionText);
+        } else {
+            $instructionText = str_replace('[SICK_LEAVE_DATA]', $sickLeaveDataText, $instructionText);
+        }
+
+        if (empty($vactionLeaveDataText)) {
+            $vactionLeaveDataText = "(Belum Melakukan Pengajuan Izin Cuti)";
+            $instructionText = str_replace('[VACATION_LEAVE_DATA]', $vactionLeaveDataText, $instructionText);
+        } else {
+            $instructionText = str_replace('[VACATION_LEAVE_DATA]', $vactionLeaveDataText, $instructionText);
         }
 
         return $instructionText;

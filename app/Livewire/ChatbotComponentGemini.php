@@ -87,13 +87,13 @@ class ChatbotComponentGemini extends Component
         $sendChatController = new SendChatController();
 
         $data = $sendChatController->fetchData();
-        $instructionText = $sendChatController->prosessInstruction($data['systemInstructions'], $data['employeeData'], $data['departmentData'], $data['departmentTasksData'], $data['attendanceData']);
-
+        $instructionText = $sendChatController->prosessInstruction($data['systemInstructions'], $data['employeeData'], $data['departmentData'], $data['departmentTasksData'], $data['attendanceData'], $data['sickLeaveData'], $data['vactionLeaveData']);
         $systemInstructionContext = [
             [
                 'text' => $instructionText,
             ]
         ];
+        
         $userInputs = $this->userInputs;
         $responses = $this->responses;
         $maxLength = max(count($userInputs), count($responses));

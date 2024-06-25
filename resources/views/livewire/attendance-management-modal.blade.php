@@ -87,7 +87,7 @@
     <!-- Delete Modal -->
     <x-dialog-modal wire:model.live="modalDelete">
         <x-slot name="title">
-            {{ __('Delete User') }}
+            {{ __('Delete Employee Attendance') }}
         </x-slot>
 
         <x-slot name="content">
