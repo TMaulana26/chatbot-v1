@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\InfoUmumHR;
 use App\Livewire\SickVacationLeaveManagement;
 use App\Livewire\TaskManagement;
 use App\Livewire\UsersManagement;
@@ -51,6 +52,7 @@ Route::middleware([
         Route::group(['prefix' => 'leave-management'], function () {
            Route::get('/', [SickVacationLeaveManagement::class, 'render'])->name('leave-management.index'); 
         });
+        Route::get('/infromation-management', [InfoUmumHR::class, 'render'])->name('info-umum-h-r.index');
     });
 
     Route::post('/chatbot-2/session', [ChatController::class, 'createSession']);

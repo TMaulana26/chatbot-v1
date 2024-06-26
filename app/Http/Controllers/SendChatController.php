@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DepartmentTask;
+use App\Models\InfoUmumHR;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Employee;
@@ -17,6 +18,7 @@ class SendChatController extends Controller
     public function fetchData()
     {
         $systemInstructions = SystemInstruction::all();
+        $infoUmumData = InfoUmumHR::all();
         $employeeData = Employee::all();
         $departmentData = Department::all();
         $departmentTasksData = DepartmentTask::all();
@@ -24,14 +26,20 @@ class SendChatController extends Controller
         $sickLeaveData = Employee::find(Auth::user()->id)->sickLeaves;
         $vactionLeaveData = Employee::find(Auth::user()->id)->vacationLeaves;
 
-        return compact('systemInstructions', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData', 'sickLeaveData', 'vactionLeaveData');
+        return compact('systemInstructions', 'infoUmumData', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData', 'sickLeaveData', 'vactionLeaveData');
     }
 
-    public function prosessInstruction($systemInstructions, $employeeData, $departmentData, $departmentTasksData, $attendanceData, $sickLeaveData, $vactionLeaveData)
+    public function prosessInstruction($systemInstructions, $infoUmumData, $employeeData, $departmentData, $departmentTasksData, $attendanceData, $sickLeaveData, $vactionLeaveData)
     {
         $instructionText = '';
         foreach ($systemInstructions as $instruction) {
             $instructionText .= $instruction->instruction . "\n";
+        }
+
+        $infoUmumDataText = '';
+        foreach ($infoUmumData as $data) {
+            $infoUmumDataText .= "(Info : " . $data->title . ", ";
+            $infoUmumDataText .= "Deskripsi : " . $data->description . ") \n ";
         }
 
         $employeeDataText = '';
@@ -91,6 +99,7 @@ class SendChatController extends Controller
 
         $currentTime = Carbon::now('Asia/Jakarta')->format('d/m/y H:i');
         $instructionText = str_replace('[NOW]', $currentTime, $instructionText);
+        $instructionText = str_replace('[INFO_DATA]', $infoUmumDataText, $instructionText);
         $instructionText = str_replace('[EMPLOYEE_DATA]', $employeeDataText, $instructionText);
         $instructionText = str_replace('[USERNAME]', Auth::user()->employee->name, $instructionText);
         $instructionText = str_replace('[DEPARTMENT_DATA]', $departmentDataText, $instructionText);

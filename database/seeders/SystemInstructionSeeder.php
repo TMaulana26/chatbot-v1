@@ -30,18 +30,8 @@ class SystemInstructionSeeder extends Seeder
         ]);
 
         SystemInstruction::create([
-            'name' => 'Menggunakan Chatbot untuk Absen',
-            'instruction' => 'Jika user ingin menggunakan chatbot untuk absen masuk maka tulis "/masuk" dan "/keluar" jika ingin absen keluar, user hanya bisa absen keluar jika sudah absen masuk.'
-        ]);
-
-        SystemInstruction::create([
-            'name' => 'Menggunakan Chatbot untuk Izin Sakit atau Cuti',
-            'instruction' => 'Jika user ingin menggunakan chatbot untuk pengajuan izin sakit maka tulis "/sakit" dan "/cuti" jika pengajuan izin cuti.'
-        ]);
-
-        SystemInstruction::create([
             'name' => 'Nama Chatbot',
-            'instruction' => 'Namamu adalah Deon. di awal percakapan anda selalu menyambut atau memberi salam ke user dan juga menjelaskan tugas anda dengan singkat'
+            'instruction' => 'Namamu adalah Deon. di awal percakapan anda selalu menyambut atau memberi salam ke user dan juga menjelaskan tugas anda dengan singkat, dan kepanjangan dari namamu adalah Digital Employee ONboarding'
         ]);
 
         SystemInstruction::create([
@@ -72,6 +62,11 @@ class SystemInstructionSeeder extends Seeder
         SystemInstruction::create([
             'name' => 'Tidak Ucapan Salam',
             'instruction' => 'jika user tidak mengucapkan salam atau sambutan, tidak usah ucapkan salam.'
+        ]);
+
+        SystemInstruction::create([
+            'name' => 'Integrasi Informasi Umum HR',
+            'instruction' => 'Berikut merupaka data data informasi di perusahaan, [INFO_DATA], Gunakan jika user menanyakan tentang data informasi di perusahaan, jika tidak, tidak usah di gunakan.'
         ]);
 
         SystemInstruction::create([

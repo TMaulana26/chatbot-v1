@@ -6,43 +6,9 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-8 w-auto" />
+                        <x-sidebar-logo class="block h-14 w-auto" />
                     </a>
                 </div>
-
-                {{-- <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
-                        {{ __('Users Management') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
-                        {{ __('System Instructions') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
-                        {{ __('Departments') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
-                        {{ __('Departments Task') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
-                        {{ __('Employees Management') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
-                        {{ __('Employees Attendance') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('leave-management.index') }}" :active="request()->routeIs('leave-management.index')">
-                        {{ __('Le') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
-                        {{ __('Chabot Gemini') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
-                        {{ __('Chabot GPT') }}
-                    </x-nav-link>
-                </div> --}}
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -182,6 +148,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
                 {{ __('Users Management') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('info-umum-h-r.index') }}" :active="request()->routeIs('info-umum-h-r.index')">
+                {{ __('General Info HR') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
                 {{ __('System Instructions') }}
