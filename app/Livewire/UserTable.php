@@ -12,6 +12,7 @@ use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Responsive;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -24,7 +25,9 @@ final class UserTable extends PowerGridComponent
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+            ->showSearchInput()
+            ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
@@ -39,11 +42,6 @@ final class UserTable extends PowerGridComponent
             ->select('users.*', 'roles.name as role_name');
     }
 
-    public function relationSearch(): array
-    {
-        return [];
-    }
-
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
@@ -51,7 +49,8 @@ final class UserTable extends PowerGridComponent
             ->add('user_name', fn($user) => e($user->name))
             ->add('user_email', fn($user) => e($user->email))
             ->add('role_name', fn($user) => e($user->roles->isNotEmpty() ? $user->roles[0]['name'] : 'No role assigned'))
-            ->add('created_at');
+            ->add('created_at')
+            ->add('updated_at');
 
     }
 
@@ -81,17 +80,17 @@ final class UserTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
+            Column::make('Updated at', 'updated_at_formatted', 'updated_at')
+                ->sortable()
+                ->hidden(),
+
+            Column::make('Updated at', 'updated_at')
+                ->sortable()
+                ->searchable(),
+
             Column::action('Action')
         ];
     }
-
-    public function filters(): array
-    {
-        return [
-        ];
-    }
-
-
 
     public function actions(user $row): array
     {
@@ -111,16 +110,4 @@ final class UserTable extends PowerGridComponent
                 }),
         ];
     }
-
-    /*
-    public function actionRules($row): array
-    {
-       return [
-            // Hide button edit for ID 1
-            Rule::button('edit')
-                ->when(fn($row) => $row->id === 1)
-                ->hide(),
-        ];
-    }
-    */
 }

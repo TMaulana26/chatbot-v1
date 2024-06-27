@@ -25,12 +25,14 @@ final class InfoUmumHRTable extends PowerGridComponent
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+            ->showSearchInput()
+            ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
             Responsive::make()
-                ->fixedColumns('id', 'title', 'created_at', 'updated_at', 'Action'),
+                ->fixedColumns('id', 'title', 'created_at', 'updated_at'),
         ];
     }
 

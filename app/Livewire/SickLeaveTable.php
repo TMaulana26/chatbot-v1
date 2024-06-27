@@ -25,7 +25,9 @@ final class SickLeaveTable extends PowerGridComponent
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage(perPage: 5, perPageValues: [5, 10, 50, 100])
                 ->showRecordCount(),
@@ -48,7 +50,7 @@ final class SickLeaveTable extends PowerGridComponent
             ->add('id')
             ->add('employee_id')
             ->add('employee.name', fn($row) => e($row->employee->name))
-            ->add('leave_date_formatted', fn (SickLeave $model) => Carbon::parse($model->leave_date)->format('d/m/Y'))
+            ->add('leave_date_formatted', fn(SickLeave $model) => Carbon::parse($model->leave_date)->format('d/m/Y'))
             ->add('reason')
             ->add('status')
             ->add('created_at')
@@ -61,7 +63,7 @@ final class SickLeaveTable extends PowerGridComponent
             Column::make('Id', 'id'),
             Column::make('Employee id', 'employee_id'),
             Column::make('Name', 'employee.name', 'employee.name')
-            ->searchable(),
+                ->searchable(),
 
             Column::make('Leave date', 'leave_date_formatted', 'leave_date')
                 ->sortable()

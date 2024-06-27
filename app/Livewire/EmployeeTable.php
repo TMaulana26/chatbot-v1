@@ -24,7 +24,9 @@ final class EmployeeTable extends PowerGridComponent
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),

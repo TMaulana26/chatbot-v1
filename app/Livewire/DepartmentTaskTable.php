@@ -12,6 +12,7 @@ use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Responsive;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
@@ -20,14 +21,19 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 final class DepartmentTaskTable extends PowerGridComponent
 {
     protected $listeners = ['reloadPage' => '$refresh'];
-    
+
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
+            Responsive::make()
+                ->fixedColumns('id', 'title', 'status', 'due_date'),
+
         ];
     }
 
@@ -50,7 +56,7 @@ final class DepartmentTaskTable extends PowerGridComponent
             ->add('department_id')
             ->add('department_name', fn($row) => e($row->department->name))
             ->add('status')
-            ->add('due_date_formatted', fn (DepartmentTask $model) => Carbon::parse($model->due_date)->format('d/m/Y'))
+            ->add('due_date_formatted', fn(DepartmentTask $model) => Carbon::parse($model->due_date)->format('d/m/Y'))
             ->add('created_at')
             ->add('updated_at');
     }
@@ -67,20 +73,22 @@ final class DepartmentTaskTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Department id', 'department_id')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Department name', 'department_name')
-            ->sortable()
-            ->searchable(),
-            
             Column::make('Status', 'status')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Due date', 'due_date_formatted', 'due_date')
                 ->sortable(),
+
+            Column::action('Action'),
+
+            Column::make('Department id', 'department_id')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Department name', 'department_name')
+                ->sortable()
+                ->searchable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable()
@@ -97,8 +105,6 @@ final class DepartmentTaskTable extends PowerGridComponent
             Column::make('Updated at', 'updated_at')
                 ->sortable()
                 ->searchable(),
-
-            Column::action('Action')
         ];
     }
 
@@ -111,25 +117,25 @@ final class DepartmentTaskTable extends PowerGridComponent
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        $this->js('alert('.$rowId.')');
+        $this->js('alert(' . $rowId . ')');
     }
 
     public function actions(DepartmentTask $row): array
     {
         return [
             Button::add('edit')
-            ->render(function ($rowId) {
-                return Blade::render(<<<HTML
+                ->render(function ($rowId) {
+                    return Blade::render(<<<HTML
                 <x-success-button onclick="Livewire.dispatch('ModalEdit', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-pen-to-square"></i></x-success-button>
             HTML);
-            }),
+                }),
 
-        Button::add('delete')
-            ->render(function ($rowId) {
-                return Blade::render(<<<HTML
+            Button::add('delete')
+                ->render(function ($rowId) {
+                    return Blade::render(<<<HTML
                 <x-danger-button onclick="Livewire.dispatch('ModalDelete', { id:  {$rowId->id}  })"><i class="fa-sharp fa-solid fa-trash"></i></x-danger-button>
             HTML);
-            }),
+                }),
         ];
     }
 

@@ -91,12 +91,6 @@
                 <span class="ml-3" x-show="isOpen">Chabot Gemini</span>
             </x-responsive-nav-link>
         </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
-                <i class="fas fa-robot"></i>
-                <span class="ml-3" x-show="isOpen">Chabot GPT</span>
-            </x-responsive-nav-link>
-        </div>
     </nav>
     <div class="flex flex-col items-center p-4 border-t border-gray-700" x-show="isOpen">
         <form method="POST" action="{{ route('logout') }}" x-data>

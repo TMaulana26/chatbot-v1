@@ -173,9 +173,6 @@
             <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
                 {{ __('Chabot Gemini') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
-                {{ __('Chabot GPT') }}
-            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

@@ -22,12 +22,14 @@ final class VacationLeaveTable extends PowerGridComponent
 {
     protected $listeners = ['reloadPage' => '$refresh'];
 
-    
+
 
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage(perPage: 5, perPageValues: [5, 10, 50, 100])
                 ->showRecordCount(),

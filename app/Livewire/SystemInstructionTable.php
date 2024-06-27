@@ -12,6 +12,7 @@ use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Responsive;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
@@ -23,10 +24,14 @@ final class SystemInstructionTable extends PowerGridComponent
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
+            Responsive::make()
+                ->fixedColumns('id', 'name', 'created_at', 'updated_at'),
         ];
     }
 
@@ -58,10 +63,6 @@ final class SystemInstructionTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Instruction', 'instruction')
-                ->sortable()
-                ->searchable(),
-
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable()
                 ->hidden(),
@@ -78,7 +79,11 @@ final class SystemInstructionTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::action('Action')
+            Column::action('Action'),
+
+            Column::make('Instruction', 'instruction')
+            ->sortable()
+            ->searchable(),
         ];
     }
 

@@ -11,7 +11,7 @@
                 <div
                     class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
                     <div class="flex flex-col justify-center">
-                        <x-application-logo class="block h-10 w-auto" />
+                        <x-sidebar-logo class="block h-16 w-auto" />
                         <p class="font-bold text-gray-500 text-center mt-2 italic">
                             {{ __('Departments Management ') }}
                         </p>
