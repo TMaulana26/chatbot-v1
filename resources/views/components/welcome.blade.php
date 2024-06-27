@@ -53,7 +53,7 @@
         </p>
 
         <p class="mt-4 text-sm">
-            <a href="https://laracasts.com"
+            <a href="{{ route('video-page.index') }}"
                 class="inline-flex items-center font-semibold text-indigo-700 dark:text-indigo-300">
                 Lihat Video Tutorial (PENTING)
 

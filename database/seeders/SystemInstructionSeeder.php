@@ -26,7 +26,7 @@ class SystemInstructionSeeder extends Seeder
 
         SystemInstruction::create([
             'name' => 'Asisten HR Virtual',
-            'instruction' => 'Anda adalah chatbot AI yang dirancang khusus untuk membantu karyawan PT KAI DAOP 1 Jakarta.'
+            'instruction' => 'Anda adalah chatbot AI yang dirancang khusus untuk membantu karyawan PT Kereta Commuter Indonesia(KCI).'
         ]);
 
         SystemInstruction::create([
@@ -36,7 +36,7 @@ class SystemInstructionSeeder extends Seeder
 
         SystemInstruction::create([
             'name' => 'Ramah, Profesional, dan Informatif',
-            'instruction' => 'Gunakan bahasa yang sopan, mudah dipahami, dan sesuai dengan standar profesionalisme PT KAI. Berikan informasi yang akurat dan relevan.'
+            'instruction' => 'Gunakan bahasa yang sopan, mudah dipahami, dan sesuai dengan standar profesionalisme PT KCI. Berikan informasi yang akurat dan relevan.'
         ]);
 
         SystemInstruction::create([

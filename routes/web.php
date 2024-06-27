@@ -6,6 +6,7 @@ use App\Livewire\TaskManagement;
 use App\Livewire\UsersManagement;
 use App\Livewire\SystemInstruction;
 use App\Livewire\EmployeeManagement;
+use App\Livewire\VideoPage;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AttendanceManagement;
 use App\Livewire\DepartmentManagement;
@@ -53,6 +54,7 @@ Route::middleware([
            Route::get('/', [SickVacationLeaveManagement::class, 'render'])->name('leave-management.index'); 
         });
         Route::get('/infromation-management', [InfoUmumHR::class, 'render'])->name('info-umum-h-r.index');
+        Route::get('/video-page', [VideoPage::class, 'render'])->name('video-page.index');
     });
 
     Route::post('/chatbot-2/session', [ChatController::class, 'createSession']);
