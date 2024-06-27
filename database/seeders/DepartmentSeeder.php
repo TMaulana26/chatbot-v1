@@ -17,7 +17,7 @@ class DepartmentSeeder extends Seeder
         $departments = [
             [
                 'name' => 'Operasi',
-                'description' => 'Departemen yang bertanggung jawab atas operasi sehari-hari PT KAI DAOP 1.',
+                'description' => 'Departemen yang bertanggung jawab atas operasi sehari-hari PT KCI.',
             ],
             [
                 'name' => 'Sarana',
@@ -33,7 +33,7 @@ class DepartmentSeeder extends Seeder
             ],
             [
                 'name' => 'Teknologi Informasi',
-                'description' => 'Departemen yang mengelola sistem informasi dan teknologi di PT KAI DAOP 1.',
+                'description' => 'Departemen yang mengelola sistem informasi dan teknologi di PT KCI.',
             ],
         ];
 
@@ -43,35 +43,35 @@ class DepartmentSeeder extends Seeder
                 'description' => 'Mengadakan rapat harian untuk koordinasi operasi.',
                 'department_id' => 1,
                 'status' => 'pending',
-                'due_date' => '2024-06-20',
+                'due_date' => '2024-07-20',
             ],
             [
                 'title' => 'Inspeksi Rutin Sarana',
                 'description' => 'Melakukan inspeksi rutin terhadap sarana kereta api.',
                 'department_id' => 2,
                 'status' => 'pending',
-                'due_date' => '2024-06-21',
+                'due_date' => '2024-07-21',
             ],
             [
                 'title' => 'Pelatihan SDM',
                 'description' => 'Mengadakan pelatihan untuk pengembangan karyawan.',
                 'department_id' => 3,
                 'status' => 'pending',
-                'due_date' => '2024-06-22',
+                'due_date' => '2024-07-22',
             ],
             [
                 'title' => 'Laporan Keuangan Bulanan',
                 'description' => 'Menyiapkan laporan keuangan untuk bulan ini.',
                 'department_id' => 4,
                 'status' => 'pending',
-                'due_date' => '2024-06-23',
+                'due_date' => '2024-07-23',
             ],
             [
                 'title' => 'Pembaruan Sistem Informasi',
                 'description' => 'Melakukan pembaruan sistem informasi perusahaan.',
                 'department_id' => 5,
                 'status' => 'pending',
-                'due_date' => '2024-06-24',
+                'due_date' => '2024-07-24',
             ],
         ];
 
