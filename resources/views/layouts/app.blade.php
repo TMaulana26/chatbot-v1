@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,13 +14,14 @@
 
     <!-- Scripts -->
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <link rel="stylesheet" href="{{asset('/build/assets/app.css')}}">
-    <script src="{{asset('/build/assets/app.js')}}"></script>
+    <link rel="stylesheet" href="{{ secure_asset('/build/assets/app.css') }}">
+    <script src="{{ secure_asset('/build/assets/app.js') }}"></script>
     <script src="https://kit.fontawesome.com/90ba97ccf7.js" crossorigin="anonymous"></script>
 
     <!-- Styles -->
     @livewireStyles
 </head>
+
 <body class="font-sans antialiased">
     <x-banner />
 
@@ -51,4 +53,5 @@
 
     @livewireScripts
 </body>
+
 </html>
