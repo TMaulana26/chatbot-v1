@@ -22,9 +22,9 @@ class SendChatController extends Controller
         $employeeData = Employee::all();
         $departmentData = Department::all();
         $departmentTasksData = DepartmentTask::all();
-        $attendanceData = Employee::find(Auth::user()->id)->attendances;
-        $sickLeaveData = Employee::find(Auth::user()->id)->sickLeaves;
-        $vactionLeaveData = Employee::find(Auth::user()->id)->vacationLeaves;
+        $attendanceData = Employee::find(Auth::user()->employee->id)->attendances;
+        $sickLeaveData = Employee::find(Auth::user()->employee->id)->sickLeaves;
+        $vactionLeaveData = Employee::find(Auth::user()->employee->id)->vacationLeaves;
 
         return compact('systemInstructions', 'infoUmumData', 'employeeData', 'departmentData', 'departmentTasksData', 'attendanceData', 'sickLeaveData', 'vactionLeaveData');
     }
@@ -35,6 +35,15 @@ class SendChatController extends Controller
         foreach ($systemInstructions as $instruction) {
             $instructionText .= $instruction->instruction . "\n";
         }
+
+        $userDataText = '';
+        $userDataText .= "(Nama : " . Auth::user()->employee->name . ", ";
+        $userDataText .= "Departermen : " . Auth::user()->employee->department_id . ", ";
+        $userDataText .= "Jabatan : " . Auth::user()->employee->job_title . ", ";
+        $userDataText .= "Email : " . Auth::user()->employee->email . ", ";
+        $userDataText .= "No. HP : " . Auth::user()->employee->phone . ", ";
+        $userDataText .= "Mulai Kerja : " . Auth::user()->employee->hire_date . ", ";
+        $userDataText .= "Gaji : " . (Auth::user()->employee->salary === "" ? "gaji belum ditentukan" : Auth::user()->employee->salary) . ") \n";
 
         $infoUmumDataText = '';
         foreach ($infoUmumData as $data) {
@@ -49,8 +58,7 @@ class SendChatController extends Controller
             $employeeDataText .= "Jabatan : " . $data->job_title . ", ";
             $employeeDataText .= "Email : " . $data->email . ", ";
             $employeeDataText .= "No. HP : " . $data->phone . ", ";
-            $employeeDataText .= "Mulai Kerja : " . $data->hire_date . ", ";
-            $employeeDataText .= "Gaji : " . $data->salary . ") \n ";
+            $employeeDataText .= "Mulai Kerja : " . $data->hire_date . ") \n ";
         }
 
         $departmentDataText = '';
@@ -101,7 +109,7 @@ class SendChatController extends Controller
         $instructionText = str_replace('[NOW]', $currentTime, $instructionText);
         $instructionText = str_replace('[INFO_DATA]', $infoUmumDataText, $instructionText);
         $instructionText = str_replace('[EMPLOYEE_DATA]', $employeeDataText, $instructionText);
-        $instructionText = str_replace('[USERNAME]', Auth::user()->employee->name, $instructionText);
+        $instructionText = str_replace('[USERNAME]', $userDataText, $instructionText);
         $instructionText = str_replace('[DEPARTMENT_DATA]', $departmentDataText, $instructionText);
         $instructionText = str_replace('[DEPARTMENT_TASK_DATA]', $departmentTasksDataText, $instructionText);
         $instructionText = str_replace('[SICK_LEAVE_DATA]', $sickLeaveDataText, $instructionText);

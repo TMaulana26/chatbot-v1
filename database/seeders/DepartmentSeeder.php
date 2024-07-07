@@ -35,6 +35,14 @@ class DepartmentSeeder extends Seeder
                 'name' => 'Teknologi Informasi',
                 'description' => 'Departemen yang mengelola sistem informasi dan teknologi di PT KCI.',
             ],
+            [
+                'name' => 'Media Relations',
+                'description' => 'Departemen Media Relations bertugas membangun dan memelihara hubungan baik antara organisasi/perusahaan dengan media massa melalui komunikasi proaktif, penyiapan materi publikasi, penanganan permintaan media, pengelolaan krisis, monitoring, dan evaluasi untuk membangun citra positif dan mencapai tujuan bisnis.',
+            ],
+            [
+                'name' => 'Community and Event',
+                'description' => 'Departemen Community and Event bertugas membangun dan memelihara hubungan baik dengan komunitas serta merencanakan dan melaksanakan berbagai acara untuk meningkatkan keterlibatan dan loyalitas komunitas melalui komunikasi dua arah, program komunitas, perencanaan dan pelaksanaan acara, evaluasi, dan pelaporan.',
+            ],
         ];
 
         $tasks = [
@@ -70,6 +78,20 @@ class DepartmentSeeder extends Seeder
                 'title' => 'Pembaruan Sistem Informasi',
                 'description' => 'Melakukan pembaruan sistem informasi perusahaan.',
                 'department_id' => 5,
+                'status' => 'pending',
+                'due_date' => '2024-07-24',
+            ],
+            [
+                'title' => 'Digital Media',
+                'description' => 'Memanfaatkan media sosial dan platform digital lainnya untuk berkomunikasi dengan media dan publik.',
+                'department_id' => 6,
+                'status' => 'pending',
+                'due_date' => '2024-07-24',
+            ],
+            [
+                'title' => 'Publikasi',
+                'description' => 'Menyiapkan materi promosi untuk acara dan kegiatan komunitas.',
+                'department_id' => 7,
                 'status' => 'pending',
                 'due_date' => '2024-07-24',
             ],

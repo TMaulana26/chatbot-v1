@@ -15,21 +15,87 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all();
-        $departments = Department::all();
+        $employees = [
+            [
+                'name' => 'Hafidz Saputra',
+                'email' => 'hafidz.saputra@krl.co.id',
+                'phone' => '085692797845',
+                'hire_date' => '2018-01-01',
+                'department' => 'Media Relations',
+            ],
+            [
+                'name' => 'Fathan Mubien',
+                'email' => 'fathan.mubien@krl.co.id',
+                'phone' => '081377371211',
+                'hire_date' => '2018-01-15',
+                'department' => 'Media Relations',
+            ],
+            [
+                'name' => 'Abung Fayshal',
+                'email' => 'abung.fayshal@krl.co.id',
+                'phone' => '082298059673',
+                'hire_date' => '2016-11-07',
+                'department' => 'Community and Event',
+            ],
+            [
+                'name' => 'Muhammad Faishal Akbar',
+                'email' => 'muhammad.akbar@krl.co.id',
+                'phone' => '081381635950',
+                'hire_date' => '2018-10-01',
+                'department' => 'Community and Event',
+            ],
+            [
+                'name' => 'Fajar Ramadhan Firmansyah',
+                'email' => 'fajar.firmansyah@krl.co.id',
+                'phone' => '081222500037',
+                'hire_date' => '2018-10-01',
+                'department' => 'Community and Event',
+            ],
+            [
+                'name' => 'Admin Mtim',
+                'email' => 'mtim0343@gmail.com',
+                'phone' => '081234567890',
+                'hire_date' => '2017-02-01',
+                'department' => 'Teknologi Informasi',
+            ],
+            [
+                'name' => 'HR Mtim',
+                'email' => 'tm052602@gmail.com',
+                'phone' => '081234567891',
+                'hire_date' => '2019-05-01',
+                'department' => 'Teknologi Informasi',
+            ],
+            [
+                'name' => 'Admin Deon',
+                'email' => 'admin@deon.com',
+                'phone' => '081234567892',
+                'hire_date' => '2019-05-01',
+                'department' => 'Teknologi Informasi',
+            ],
+            [
+                'name' => 'HR Deon',
+                'email' => 'hr@deon.com',
+                'phone' => '081234567893',
+                'hire_date' => '2019-05-01',
+                'department' => 'SDM',
+            ],
+        ];
 
-        foreach ($users as $user) {
-            $department = $departments->random();
+        foreach ($employees as $employeeData) {
+            $user = User::where('email', $employeeData['email'])->first();
+            $department = Department::where('name', $employeeData['department'])->first();
+            $salary = rand(9000000, 20000000);
+            $formattedSalary = "Rp. " . number_format($salary, 2, ',', '.');
 
             Employee::create([
-                'user_id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
+                'name' => $employeeData['name'],
+                'email' => $employeeData['email'],
                 'job_title' => $this->generateJobTitle(),
-                'phone' => $this->generatePhone(),
-                'hire_date' => $this->generateHireDate(),
-                'salary' => $this->generateSalary(),
+                'phone' => $employeeData['phone'],
+                'hire_date' => $employeeData['hire_date'],
                 'department_id' => $department->id,
+                'user_id' => $user->id,
+                'salary' => $formattedSalary,
             ]);
         }
     }
@@ -45,26 +111,4 @@ class EmployeeSeeder extends Seeder
 
         return $jobTitles[array_rand($jobTitles)];
     }
-
-    private function generatePhone(): string
-    {
-        $digits = 8;
-        $min = pow(10, $digits - 1);
-        $max = pow(10, $digits) - 1;
-        $phone = mt_rand($min, $max);
-        return $phone;
-    }
-
-    private function generateHireDate(): string
-    {
-        $date = date('Y-m-d', strtotime('-1 year'));
-        return $date;
-    }
-
-    private function generateSalary(): string
-    {
-        $salary = rand(10000000, 100000000);
-        return "Rp. " . number_format($salary, 2, ',', '.');
-    }
-
 }

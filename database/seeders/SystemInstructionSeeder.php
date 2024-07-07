@@ -50,8 +50,8 @@ class SystemInstructionSeeder extends Seeder
         ]);
 
         SystemInstruction::create([
-            'name' => 'Nama Pengguna',
-            'instruction' => "ini nama user nya [USERNAME]."
+            'name' => 'Profil Pengguna',
+            'instruction' => "ini profil user nya [USERNAME]."
         ]);
 
         SystemInstruction::create([

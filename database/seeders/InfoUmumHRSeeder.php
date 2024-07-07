@@ -15,6 +15,11 @@ class InfoUmumHRSeeder extends Seeder
     public function run(): void
     {
         InfoUmumHR::create([
+            'title' => 'Struktur organisasi KCI',
+            'description' => "agan organisasi ini menunjukkan bahwa KCI dipimpin oleh seorang Presiden Direktur. \nPresiden Direktur membawahi empat direktur, yaitu Direktur Operasi dan Komersial, Direktur Teknik, Direktur Keuangan dan Administrasi, dan Direktur HSE dan Keamanan. \nMasing-masing direktur membawahi beberapa divisi. \nDirektur Operasi dan Komersial membawahi Divisi Operasi Kereta, Divisi TI, Divisi Perencanaan & Evaluasi Pemeliharaan, Divisi Komersial, Divisi Fasilitas Pelayanan Kereta & Pelayanan Pelanggan, Divisi PSO & TAC, dan Divisi Kereta Lokal. \nDirektur Teknik membawahi Divisi Sarana Bergerak dan Divisi Infrastruktur.\n Direktur Keuangan dan Administrasi membawahi Divisi Keuangan, \nDivisi Budgeting & Akuntansi, Divisi Sumber Daya Manusia, dan Divisi Logistik. Direktur HSE dan Keamanan membawahi Divisi Sekretaris Perusahaan, \nDivisi GRC & Hukum, Divisi Audit Internal, dan Divisi Perencanaan Strategis. \nTerdapat juga konsultan internal yang bertanggung jawab langsung kepada Presiden Direktur."
+        ]);
+
+        InfoUmumHR::create([
             'title' => 'Jam Kerja',
             'description' => "Senin - Jumat: 09.00 - 17.00 WIB\nIstirahat: 12.00 - 13.00 WIB"
         ]);

@@ -12,61 +12,6 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Teams Dropdown -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="ms-3 relative">
-                        <x-dropdown align="right" width="60">
-                            <x-slot name="trigger">
-                                <span class="inline-flex rounded-md">
-                                    <button type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
-                                        {{ Auth::user()->currentTeam->name }}
-
-                                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                        </svg>
-                                    </button>
-                                </span>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <div class="w-60">
-                                    <!-- Team Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Team') }}
-                                    </div>
-
-                                    <!-- Team Settings -->
-                                    <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                        {{ __('Team Settings') }}
-                                    </x-dropdown-link>
-
-                                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                        <x-dropdown-link href="{{ route('teams.create') }}">
-                                            {{ __('Create New Team') }}
-                                        </x-dropdown-link>
-                                    @endcan
-
-                                    <!-- Team Switcher -->
-                                    @if (Auth::user()->allTeams()->count() > 1)
-                                        <div class="border-t border-gray-200 dark:border-gray-600"></div>
-
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Switch Teams') }}
-                                        </div>
-
-                                        @foreach (Auth::user()->allTeams() as $team)
-                                            <x-switchable-team :team="$team" />
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-                @endif
-
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
@@ -146,33 +91,51 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
-                {{ __('Users Management') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('info-umum-h-r.index') }}" :active="request()->routeIs('info-umum-h-r.index')">
-                {{ __('General Info HR') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
-                {{ __('System Instructions') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
-                {{ __('Departments') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
-                {{ __('Departments Tasks') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
-                {{ __('Employees Management') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
-                {{ __('Employees Attendance') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('leave-management.index') }}" :active="request()->routeIs('leave-management.index')">
-                {{ __('Leave Management') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
-                {{ __('Chabot Gemini') }}
-            </x-responsive-nav-link>
+            @can('use user management')
+                <x-responsive-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
+                    {{ __('Users Management') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use info management')
+                <x-responsive-nav-link href="{{ route('info-umum-h-r.index') }}" :active="request()->routeIs('info-umum-h-r.index')">
+                    {{ __('General Info HR') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use instruction management')
+                <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
+                    {{ __('System Instructions') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use department management')
+                <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
+                    {{ __('Departments') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use task management')
+                <x-responsive-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
+                    {{ __('Departments Tasks') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use employee management')
+                <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
+                    {{ __('Employees Management') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('')
+                <x-responsive-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
+                    {{ __('Employees Attendance') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use leave management')
+                <x-responsive-nav-link href="{{ route('leave-management.index') }}" :active="request()->routeIs('leave-management.index')">
+                    {{ __('Leave Management') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('use chatbot')
+                <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
+                    {{ __('Chabot Gemini') }}
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

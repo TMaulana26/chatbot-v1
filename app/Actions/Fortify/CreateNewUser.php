@@ -36,7 +36,7 @@ class CreateNewUser implements CreatesNewUsers
             ]), function (User $user) {
                 // $this->createTeam($user);
                 
-                $user->assignRole('employee');
+                $user->assignRole('user');
             });
         });
     }

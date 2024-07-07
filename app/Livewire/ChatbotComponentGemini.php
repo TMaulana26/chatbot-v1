@@ -60,7 +60,11 @@ class ChatbotComponentGemini extends Component
 
     public function chat()
     {
-        $this->validate();
+            $this->validate([
+        'message' => 'required|string|min:1',
+    ], [
+        'message.required' => 'Pesan tidak bisa kosong',
+    ]);
 
         if (!$this->currentSessionId) {
             $this->startNewSession();

@@ -37,60 +37,78 @@
                 <span class="ml-3" x-show="isOpen">Dashboard</span>
             </x-responsive-nav-link>
         </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
-                <i class="fas fa-users"></i>
-                <span class="ml-3" x-show="isOpen">Users Management</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('info-umum-h-r.index') }}" :active="request()->routeIs('info-umum-h-r.index')">
-                <i class="fas fa-info-circle"></i>
-                <span class="ml-3" x-show="isOpen">General Info HR</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
-                <i class="fas fa-book"></i>
-                <span class="ml-3" x-show="isOpen">System Instruction</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
-                <i class="fas fa-sitemap"></i>
-                <span class="ml-3" x-show="isOpen">Departments</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
-                <i class="fas fa-tasks"></i>
-                <span class="ml-3" x-show="isOpen">Departments Tasks</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
-                <i class="fas fa-user-tie"></i>
-                <span class="ml-3" x-show="isOpen">Employees Management</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
-                <i class="fas fa-calendar-check"></i>
-                <span class="ml-3" x-show="isOpen">Employees Attendance</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('leave-management.index') }}" :active="request()->routeIs('leave-management.index')">
-                <i class="fas fa-plane-departure"></i>
-                <span class="ml-3" x-show="isOpen">Leave Management</span>
-            </x-responsive-nav-link>
-        </div>
-        <div class="px-4 py-2">
-            <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
-                <i class="fas fa-robot"></i>
-                <span class="ml-3" x-show="isOpen">Chabot Gemini</span>
-            </x-responsive-nav-link>
-        </div>
+        @can('use user management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('users-management.index') }}" :active="request()->routeIs('users-management.index')">
+                    <i class="fas fa-users"></i>
+                    <span class="ml-3" x-show="isOpen">Users Management</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use info management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('info-umum-h-r.index') }}" :active="request()->routeIs('info-umum-h-r.index')">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="ml-3" x-show="isOpen">General Info HR</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use instruction management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('system-instruction.index') }}" :active="request()->routeIs('system-instruction.index')">
+                    <i class="fas fa-book"></i>
+                    <span class="ml-3" x-show="isOpen">System Instruction</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use department management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('department-management.index') }}" :active="request()->routeIs('department-management.index')">
+                    <i class="fas fa-sitemap"></i>
+                    <span class="ml-3" x-show="isOpen">Departments</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use task management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('department-tasks-management.index') }}" :active="request()->routeIs('department-tasks-management.index')">
+                    <i class="fas fa-tasks"></i>
+                    <span class="ml-3" x-show="isOpen">Departments Tasks</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use employee management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('employees-management.index') }}" :active="request()->routeIs('employees-management.index')">
+                    <i class="fas fa-user-tie"></i>
+                    <span class="ml-3" x-show="isOpen">Employees Management</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use attendance management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('attendance-management.index') }}" :active="request()->routeIs('attendance-management.index')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span class="ml-3" x-show="isOpen">Employees Attendance</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use leave management')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('leave-management.index') }}" :active="request()->routeIs('leave-management.index')">
+                    <i class="fas fa-plane-departure"></i>
+                    <span class="ml-3" x-show="isOpen">Leave Management</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('use chatbot')
+            <div class="px-4 py-2">
+                <x-responsive-nav-link href="{{ route('chatbot-2') }}" :active="request()->routeIs('chatbot-2')">
+                    <i class="fas fa-robot"></i>
+                    <span class="ml-3" x-show="isOpen">Chabot Gemini</span>
+                </x-responsive-nav-link>
+            </div>
+        @endcan
     </nav>
     <div class="flex flex-col items-center p-4 border-t border-gray-700" x-show="isOpen">
         <form method="POST" action="{{ route('logout') }}" x-data>

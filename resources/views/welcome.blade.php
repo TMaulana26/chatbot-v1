@@ -948,6 +948,10 @@
 
                             <div class="relative flex items-center gap-6 lg:items-end">
                                 <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
+                                    <video autoplay muted>
+                                        <source src="{{ asset('videos/Intro.mp4') }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
                                     <div
                                         class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#5C4E82]/10 sm:size-16">
                                         <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -1063,7 +1067,7 @@
                 </main>
 
                 <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                    Chatbot HRIS DEON v1.0
                 </footer>
             </div>
         </div>
