@@ -14,8 +14,8 @@
 
     <!-- Scripts -->
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <link rel="stylesheet" href="{{ secure_asset('/build/assets/app.css') }}">
-    <script src="{{ secure_asset('/build/assets/app.js') }}"></script>
+    <link rel="stylesheet" href="{{ secure_asset('/build/app.css') }}">
+    <script src="{{ secure_asset('/build/app2.js') }}"></script>
 
 
     <!-- Styles -->
