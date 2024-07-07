@@ -13,7 +13,7 @@ use App\Livewire\DepartmentManagement;
 use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome1');
 });
 
 Route::middleware([
